@@ -1,13 +1,22 @@
 Analizamos las formas normales de las tablas dadas;
+
 Establecimientos Educativos:
 No cumple la primer forma normal (1FN), ya que el atributo 'Domicilio' no es un atributo atomico. 
 Es multivaluado ya que representa el valor de 'Calle', 'numero' y 'Localidad'.
-Establecimientos Productivos:
+
+* Establecimientos Productivos:
 Cumple la primer forma normal (1FN), todos sus atributos son atomicos.
 No cumple con la segunda forma normal (2FN) ya que por ejemplo, 
 la dependencia funcional: 'in_departamentos' -> 'departamentos' es una dependencia parcial, 
 dado que 'departamentos' es un atributo no primo que depende de solo un atributo de la clave conformada por: 
-'anio','in_departamentos','clae6' y 'genero'
+'anio','in_departamentos','clae6' y 'genero' (revisar,nose si esta bien justificado esto...)
+
+Grafico de porque no cumple 2FN:
+[anio] [in_departamentos] [departamentos] [provincia_id] [provincia] [clae6] [clae2] [letra] [genero] [empleo] [establecimiento] [empresas_exportadoras]
+¯¯¯¯¯   ¯¯¯¯¯¯¯¯¯|¯¯¯¯¯¯¯       Ʌ                                   ¯¯¯¯¯¯¯                 ¯¯¯¯¯¯¯¯
+                 |              |
+                  ¯¯¯¯¯¯¯¯¯¯¯¯¯¯
+
 
 (auxiliar)
 comprobé la clave de Establecimientos productivos con una consulta sql. No encontre ninguna otra clave minimal posible de la tabla
