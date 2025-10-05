@@ -1,0 +1,51 @@
+Analizamos las formas normales de las tablas dadas;
+Establecimientos Educativos:
+No cumple la primer forma normal (1FN), ya que el atributo 'Domicilio' no es un atributo atomico. 
+Es multivaluado ya que representa el valor de 'Calle', 'numero' y 'Localidad'.
+Establecimientos Productivos:
+Cumple la primer forma normal (1FN), todos sus atributos son atomicos.
+No cumple con la segunda forma normal (2FN) ya que por ejemplo, 
+la dependencia funcional: 'in_departamentos' -> 'departamentos' es una dependencia parcial, 
+dado que 'departamentos' es un atributo no primo que depende de solo un atributo de la clave conformada por: 
+'anio','in_departamentos','clae6' y 'genero'
+
+(auxiliar)
+comprobé la clave de Establecimientos productivos con una consulta sql. No encontre ninguna otra clave minimal posible de la tabla
+"Datos_por_departamento_actividad_y_sexo.csv"
+
+adjunto codigo para correr en python:
+
+"""
+Este codigo comprueba que ninguna fila se repita al seleccionar las columnas
+para verificar si funciona como clave.
+@author: martina
+"""
+
+import pandas as pd
+import duckdb as dd
+
+carpeta = "/home/martina/Escritorio/tpLabo1/"
+
+EstProd = pd.read_csv(carpeta+"Datos_por_departamento_actividad_y_sexo.csv")
+
+#Compruedo mi CK 1
+consultaSQL = """ SELECT anio, in_departamentos, clae6, genero, COUNT(*)
+                  FROM EstProd
+                  GROUP BY anio, in_departamentos, clae6, genero
+                  HAVING COUNT(*) > 1
+              """
+
+dataframeResultado = dd.query(consultaSQL).df()
+#print(dataframeResultado)
+#Es CK!!
+
+#Compruedo mi CK 2
+consultaSQL = """ SELECT anio, departamento, clae6, genero, COUNT(*)
+                  FROM EstProd
+                  GROUP BY anio, departamento, clae6, genero
+                  HAVING COUNT(*) > 1
+              """
+
+dataframeResultado = dd.query(consultaSQL).df()
+print(dataframeResultado)
+#NO ES CK :(
