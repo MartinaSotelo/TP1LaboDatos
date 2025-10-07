@@ -58,3 +58,49 @@ consultaSQL = """ SELECT anio, departamento, clae6, genero, COUNT(*)
 dataframeResultado = dd.query(consultaSQL).df()
 print(dataframeResultado)
 #NO ES CK :( 
+
+
+
+
+Problemas de calidad de datos:
+Establecimientos educativos:
+- Códigos de área/números de telefono/dirección/ "null"
+- Nulls que no son nulls sino que son espacios o ceros, o un 1
+- Valores faltantes (nulls/espacios)
+- Hay 1661 colegios sin modalidad según este código: (mentira, son de servicios complementarios)
+
+consulta = """
+            SELECT COUNT(Común), COUNT(Especial), COUNT(Adultos), COUNT(Artística), COUNT(Hospitalaria), COUNT(Intercultural), COUNT(Encierro)
+            FROM establecimientos_educativos
+            WHERE Común = '1'  OR Especial = '1' OR Adultos = '1' OR Artística = '1' OR Hospitalaria = '1' OR Intercultural = '1' OR Encierro = '1'
+"""
+
+dataframeResultado = dd.query(consulta).df()
+print(dataframeResultado)
+
+
+consulta = """
+            SELECT Común, Especial, Adultos, Artística, Hospitalaria, Intercultural, Encierro
+            FROM establecimientos_educativos
+            WHERE Común != '1'  AND Especial != '1' AND Adultos != '1' AND Artística != '1' AND Hospitalaria != '1' AND Intercultural != '1' AND Encierro != '1'
+"""
+
+
+
+
+Resulta que según esta función, no hay valores null en el df, sino que son espacios o algo:
+
+cant_nulls = 0
+for columna in establecimientos_educativos.columns:
+    consulta = f'SELECT COUNT("{columna}") FROM establecimientos_educativos WHERE "{columna}" IS NULL'
+    df = dd.query(consulta).df()
+    cant_nulls += int(df.iloc[0, 0])
+print(cant_nulls)
+
+
+
+
+
+
+
+
