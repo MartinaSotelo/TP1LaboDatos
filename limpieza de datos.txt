@@ -57,4 +57,4 @@ consultaSQL = """ SELECT anio, departamento, clae6, genero, COUNT(*)
 
 dataframeResultado = dd.query(consultaSQL).df()
 print(dataframeResultado)
-#NO ES CK :(
+#NO ES CK :( 
