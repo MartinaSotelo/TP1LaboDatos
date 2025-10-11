@@ -99,6 +99,30 @@ print(cant_nulls)
 
 
 
+Problemas de calidad:
+Tanto en EE (establecimientos educativos) como en EP(establecimientos productivos), no coinciden todos los nombres de departamento ni nombre de provincia. Atributo de consistencia. Problema de Instancia.
+Metrica para evaluar: (hay que codearlo)
+contar cuantas filas coinciden entre las columnas EE(nombre departamento) y EP(nombre departamento). Sacar un porcentaje sobre el total
+limpieza:
+podemos 
+1)tomar los nombre de una tabla y copiarlos en la otra o
+2) buscar una lista de nombres de provincia y nombre de departamento por id's y joinearlo a ambas tablas.
+
+en EP hay otro problema de consistencia en los id de departamento, ya que se ve que agregan un 0 cuando el id es mas chico, pero en otros datasets como padron_población los id no vienen con el 0 adelante. problema de instancia.
+metrica para evaluar:(hay que codearlo)
+igual que antes contar cuantas filas coinciden entre columas EP(id_departamento) y PP(area). y sacar el porcentaje sobre el total de las filas.
+limpieza:
+1)agregarle el cero al dataframe de padron_poblacion o
+2)sacarle el cero al dataframe de EP
+
+EE no cuenta con id_departamento, solo con nombre de departamento. Esto es un problema de completitud ademas de consistencia, ya que al tener varios posibilidades de string para un mismo nombre departamento, tendria que contar con un codigo id para saber de que departamento se esta refiriendo. Ademas de contar con varios departamentos con nombres parecidos como: capital o Gral San Martin  problema de modelo de datos
+metrica: (hay q codearlo)
+mirando solo columna de departamentos, buscar cuantos departamentos coinciden (no creo que sean iguales, pero que sean parecidos, podemos usar re).
+sacar porcentaje.
+
+limpieza, agregarle el id a la tabla y que coincida con el nombre del departamento correspondiente.
+
+EP cuenta con Clae6, Clae2 y Letra. Es redundante, puedo sacar el clae2 y Letra a partir del clae6. Solo me tomaria una consulta con la tabla diccionario de claes. Tengos dos columnas de mas. atributo de relevancia. problema de ...
 
 
 
