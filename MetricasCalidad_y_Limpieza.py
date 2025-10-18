@@ -17,6 +17,7 @@ import numpy as np
 
 carpeta = "path"
 
+
 padron_ee = pd.read_excel(carpeta + "2022_padron_oficial_establecimientos_educativos.xlsx", skiprows=6)
 actividades = pd.read_csv(carpeta + "actividades_establecimientos.csv")
 dep_ac_sex = pd.read_csv(carpeta + "Datos_por_departamento_actividad_y_sexo.csv")
@@ -153,7 +154,7 @@ dep_ac_sex = dd.query(consulta).df()
 
 
 consulta = ''' 
-              SELECT Jurisdicción, cueanexo, Departamento, "Nivel inicial - Jardín maternal" , "Nivel inicial - Jardín de infantes", Primario, Secundario,
+              SELECT Jurisdicción, cueanexo, Departamento, "Nivel inicial - Jardín maternal" , "Nivel inicial - Jardín de infantes", Primario, Secundario, SNU, "Secundario - INET", "SNU - INET" ,
               REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(UPPER(Jurisdicción),'Á', 'A'),'É', 'E'),'Í', 'I'),'Ó', 'O'),'Ú', 'U') AS provincia_normalizado
               FROM padron_ee
              
@@ -350,7 +351,7 @@ dep_ac_sex = dd.query(consulta).df()
 
 
 consulta = ''' 
-              SELECT provincia_normalizado, cueanexo, Departamento, "Nivel inicial - Jardín maternal" , "Nivel inicial - Jardín de infantes", Primario, Secundario,
+              SELECT provincia_normalizado, cueanexo, Departamento, "Nivel inicial - Jardín maternal" , "Nivel inicial - Jardín de infantes", Primario, Secundario, SNU, "Secundario - INET", "SNU - INET" ,
               REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(LOWER(Departamento),'á', 'a'),'é', 'e'),'í', 'i'),'ó', 'o'),'ú', 'u') AS departamento_normalizado
               FROM padron_ee
              
@@ -364,7 +365,7 @@ padron_ee = dd.query(consulta).df()
 #=============================================================================
 #Selecciono las columnas que necesito y renombro
 consulta = ''' 
-              SELECT provincia_normalizado AS Provincia, cueanexo AS Cue, departamento_normalizado AS departamento, "Nivel inicial - Jardín maternal" AS "Jardin Maternal", "Nivel inicial - Jardín de infantes" AS "Jardin Infantes", Primario, Secundario  
+              SELECT provincia_normalizado AS Provincia, cueanexo AS Cue, departamento_normalizado AS departamento, "Nivel inicial - Jardín maternal" AS "Jardin_Maternal", "Nivel inicial - Jardín de infantes" AS "Jardin_Infantes", Primario, Secundario, SNU, "Secundario - INET" AS Secundario_INET, "SNU - INET" AS SNU_INET 
               FROM padron_ee
              
            '''
@@ -372,7 +373,7 @@ padron_ee_Limpio = dd.query(consulta).df()
 
 # Elimino todos las filas de colegios que no sean modalidad común (me quedo con jardin, primaria y secundaria)
 padron_ee_Limpio.replace(' ', np.nan, inplace=True) #reemplazo espacios en blanco por nulls
-padron_ee_Limpio.dropna(thresh=5,inplace=True)
+padron_ee_Limpio.dropna(thresh=4,inplace=True)
 
 #=============================================================================
 # DATOS DEPARTAMENTO POR ACTIVIDAD Y SEXO
@@ -477,3 +478,4 @@ print(f"{Porcentaje}%")
 #Exporto a csv
 dep_ac_sex_limpio.to_csv("DepartamentoActivdadySexoLimpio.csv", index=False)
 padron_ee_Limpio.to_csv("PadronEstablecimientosEducativosLimpio.csv",index=False)
+
