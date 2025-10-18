@@ -93,6 +93,23 @@ consulta = '''
                     END;
             '''
 padron_poblacion = dd.query(consulta).df()
+
+#%%
+
+consulta = """
+           SELECT 
+                 id_areas,
+                 SUM(CASE WHEN rango_nombre = '0-5' THEN cantidad END) AS rango_0_5,
+                 SUM(CASE WHEN rango_nombre = '6-12' THEN cantidad END) AS rango_6_12,
+                 SUM(CASE WHEN rango_nombre = '13-18' THEN cantidad END) AS rango_13_18,
+                 SUM(CASE WHEN rango_nombre = 'Mayores de 18' THEN cantidad END) AS mayores_18
+                 FROM padron_poblacion
+                 GROUP BY id_areas
+                 ORDER BY id_areas ASC
+
+           """
+padron_poblacion_new = dd.query(consulta).df()
+padron_poblacion_new.to_csv("Padron_poblacion_new_acomodado.csv", index=False)
 #%%
 
 '''
@@ -128,7 +145,7 @@ consulta = """
 departamento = dd.query(consulta).df()
 
 consulta = """
-                SELECT provincia_id, provincia
+                SELECT DISTINCT provincia_id, provincia
                 FROM dep_ac_sex;
             """
 
