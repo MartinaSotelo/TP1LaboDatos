@@ -5,18 +5,22 @@ import numpy as np
 
 #%%
 carpeta = "C:/Users/perei/Downloads/Datos_para_el_TP/"
+import pandas as pd
+import duckdb as dd
+import re
+import numpy as np
 
 #dep_ac_sex = pd.read_csv(carpeta + "Datos_por_departamento_actividad_y_sexo.csv")
 #padron_ee = pd.read_excel(carpeta + "2022_padron_oficial_establecimientos_educativos.xlsx", skiprows=6)
 EE_Limpio = pd.read_csv(carpeta+"PadronEstablecimientosEducativosLimpio.csv")
 EP_Limpio = pd.read_csv(carpeta+"DepartamentoActivdadySexoLimpio.csv")
 actividades = pd.read_csv(carpeta+"actividades_establecimientos.csv")
-padron_poblacion_new = pd.read_csv(carpeta+"Padron_poblacion_new_acomodado.csv")
+padron_poblacion_new = pd.read_csv(carpeta+"PadronPoblacionLimpio.csv")
 
 #%%
 
 consulta = """
-               SELECT EE_Limpio.Provincia, Cue, UPPER(departamento) AS departamento, "Jardin Infantes" AS Jardin_Infantes, Primario, Secundario
+               SELECT EE_Limpio.Provincia, Cue, UPPER(departamento) AS departamento, Jardin_Infantes, Jardin_Maternal Primario, Secundario, Secundario_INET, SNU, SNU_INET
                FROM EE_Limpio
         """
 
