@@ -24,7 +24,7 @@ consulta = """
                FROM EE_Limpio
         """
 
-EE_Limpio1 = dd.query(consulta).df()
+EE_Limpio = dd.query(consulta).df()
 
 #%%
 
@@ -86,12 +86,12 @@ Nivel_educativo = dd.query("SELECT * FROM Nivel_educativo").df()
 #%%
 
 consulta = """
-                SELECT Pertenece_a.in_departamentos, EE_Limpio1.Provincia, EE_Limpio1.departamento, COUNT(Jardin_Infantes) AS Jardines, COUNT(Primario) AS Primarias, COUNT(Secundario) AS Secundarios, padron_poblacion_new.rango_0_5 AS Poblacion_Jardin, rango_6_12 AS Poblacion_Primaria, rango_13_18 AS Poblacion_Secundaria 
-                FROM EE_Limpio1
-                JOIN Pertenece_a ON EE_Limpio1.departamento = Pertenece_a.departamento AND EE_Limpio1.Provincia = Pertenece_a.provincia
+                SELECT Pertenece_a.in_departamentos, EE_Limpio.Provincia, EE_Limpio.departamento, COUNT(Jardin_Infantes) AS Jardines, COUNT(Primario) AS Primarias, COUNT(Secundario) AS Secundarios, padron_poblacion_new.rango_0_5 AS Poblacion_Jardin, rango_6_12 AS Poblacion_Primaria, rango_13_18 AS Poblacion_Secundaria 
+                FROM EE_Limpio
+                JOIN Pertenece_a ON EE_Limpio.departamento = Pertenece_a.departamento AND EE_Limpio.Provincia = Pertenece_a.provincia
                 JOIN padron_poblacion_new ON Pertenece_a.in_departamentos = padron_poblacion_new.id_areas
-                GROUP BY Pertenece_a.in_departamentos, EE_Limpio1.Provincia, EE_Limpio1.departamento, rango_0_5, rango_6_12, rango_13_18
-                ORDER BY EE_Limpio1.Provincia ASC, Primarias DESC        
+                GROUP BY Pertenece_a.in_departamentos, EE_Limpio.Provincia, EE_Limpio.departamento, rango_0_5, rango_6_12, rango_13_18
+                ORDER BY EE_Limpio.Provincia ASC, Primarias DESC        
             """
             
 
@@ -101,7 +101,8 @@ Consulta_1 = dd.query(consulta).df()
 consulta = """
            SELECT *
            FROM EE_Limpio
-           WHERE departamento = 'la matanza'
+           WHERE departamento = 'LA MATANZA'
            """
 Consulta_13 = dd.query(consulta).df()
 #%%
+
