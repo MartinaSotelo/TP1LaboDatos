@@ -8,14 +8,12 @@ Created on Sun Oct 12 11:45:15 2025
 
 import pandas as pd
 import duckdb as dd
-import re
-import numpy as np
 
 #%%===========================================================================
 # Importamos los datasets que vamos a utilizar en este programa
 #=============================================================================
 
-carpeta = "path"
+carpeta = "path/tplabo01"
 
 
 padron_ee = pd.read_excel(carpeta + "2022_padron_oficial_establecimientos_educativos.xlsx", skiprows=6)
@@ -131,9 +129,7 @@ Total_Coincidencias_v3 = CantidadDeCoincidencias_v3.at[0, 'Total_Coincidencias']
 Porcentaje= round((Total_Coincidencias_v3 / 24 * 100),1)
 print(f"{Porcentaje}%")
 #con esto consigo el %100 de coincidencia, entonces:
-#%%=========================================================================== 
-#                                 LIMPIEZA
-#%%===========================================================================
+#=============================================================================
 # Hago que coincidan los nombres de provincias en dep_ac_sex y padron_ee
 #=============================================================================
 
@@ -160,7 +156,6 @@ consulta = '''
              
            '''
 padron_ee = dd.query(consulta).df()
-
     
 #%%===========================================================================
 #                               METRICA 2    
@@ -314,94 +309,24 @@ Total_Coincidencias_dpto = CantidadDeCoincidencias_Departamento.at[0, 'Total_Coi
 Porcentaje= round((Total_Coincidencias_dpto / 528 * 100),1)
 print(f"{Porcentaje}%")
 
-#%%=========================================================================== 
-#                                 LIMPIEZA
-#%%===========================================================================
-# Hago que coincidan los nombres de departamento en dep_ac_sex y padron_ee
-#=============================================================================
-consulta = ''' 
-             SELECT anio, in_departamentos, departamento, provincia_id, provincia_normalizado_cambia_CABA , clae6, genero, Empleo, establecimientos, empresas_exportadoras,
-                 REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(LOWER(departamento),'á', 'a'),'é', 'e'),'í', 'i'),'ó', 'o'),'ú', 'u') AS departamento_sin_tildes
-             FROM dep_ac_sex
-           '''
-dep_ac_sex = dd.query(consulta).df()
-
-consulta = '''
-              SELECT anio, in_departamentos, departamento_sin_tildes, provincia_id, provincia_normalizado_cambia_CABA, clae6, genero, Empleo, establecimientos, empresas_exportadoras,
-              REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE
-              (departamento_sin_tildes,'coronel de marina l rosales','coronel de marina leonardo rosales' 
-              ),'1§ de mayo','1° de mayo'                                                             
-              ),'mayor luis j fontana','mayor luis j. fontana'                                                      
-              ),'o higgins','ohiggins'                                                       
-              ),'doctor manuel belgrano','dr. manuel belgrano'
-              ),'general ocampo','general ortiz de ocampo'                                                     
-              ), 'coronel felipe varela','general felipe varela'
-              ), 'general angel v penaloza','angel vicente penaloza'
-              ),'general juan f quiroga','general juan facundo quiroga'
-              ),'libertador grl san martin','libertador general san martin'
-              ),'general juan martin de pueyrredon', 'juan martin de pueyrredon'
-              ), 'antartida argentina', 'antartida argentina' 
-              ),'juan b alberdi','juan bautista alberdi'
-              ), 'juan f ibarra', 'juan felipe ibarra '
-              ) as departamento_normalizado
-              FROM dep_ac_sex
-           '''       
-           
-dep_ac_sex = dd.query(consulta).df()
-
-
-consulta = ''' 
-              SELECT provincia_normalizado, cueanexo, Departamento, "Nivel inicial - Jardín maternal" , "Nivel inicial - Jardín de infantes", Primario, Secundario, SNU, "Secundario - INET", "SNU - INET" ,
-              REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(LOWER(Departamento),'á', 'a'),'é', 'e'),'í', 'i'),'ó', 'o'),'ú', 'u') AS departamento_normalizado
-              FROM padron_ee
-             
-           '''
-padron_ee = dd.query(consulta).df()
-
-#%%===========================================================================
-#              LIMPIEZA : termino de limpiar mis tablas para exportar a csv 
-#=============================================================================
-# PADRON ESTABLECIMIENTOS EDUCATIVOS 
-#=============================================================================
-#Selecciono las columnas que necesito y renombro
-consulta = ''' 
-              SELECT provincia_normalizado AS Provincia, cueanexo AS Cue, departamento_normalizado AS departamento, "Nivel inicial - Jardín maternal" AS "Jardin_Maternal", "Nivel inicial - Jardín de infantes" AS "Jardin_Infantes", Primario, Secundario, SNU, "Secundario - INET" AS Secundario_INET, "SNU - INET" AS SNU_INET 
-              FROM padron_ee
-             
-           '''
-padron_ee_Limpio = dd.query(consulta).df()
-
-# Elimino todos las filas de colegios que no sean modalidad común (me quedo con jardin, primaria y secundaria)
-padron_ee_Limpio.replace(' ', np.nan, inplace=True) #reemplazo espacios en blanco por nulls
-padron_ee_Limpio.dropna(thresh=4,inplace=True)
-
-#=============================================================================
-# DATOS DEPARTAMENTO POR ACTIVIDAD Y SEXO
-#=============================================================================
-
-consulta = ''' 
-             SELECT anio, in_departamentos, departamento_normalizado AS departamento, provincia_id, provincia_normalizado_cambia_CABA AS provincia, clae6, genero, Empleo, establecimientos, empresas_exportadoras,
-             FROM dep_ac_sex
-             WHERE anio = 2022
-           '''
-dep_ac_sex_limpio = dd.query(consulta).df()
-
-consulta = ''' 
-             SELECT  in_departamentos, departamento_normalizado AS departamento, provincia_id, provincia_normalizado_cambia_CABA AS provincia, clae6, genero, Empleo, establecimientos, empresas_exportadoras,
-             FROM dep_ac_sex
-             
-           '''
-dep_ac_sex_limpio = dd.query(consulta).df()
 
 
 #=============================================================================
 # Con mis dos metricas anteriores evaluo la calidad de consistencia de mis tablas limpias
 #=============================================================================
+print(" ")
+print("Evaluo calidad de mis tablas limpias con mismas metricas: ")
+#importo mis tablas limpias
+#=============================================================================
+padron_ee_Limpio = pd.read_csv(carpeta + "PadronEstablecimientosEducativosLimpio.csv")
+dep_ac_sex_limpio= pd.read_csv(carpeta + "DepartamentoActivdadySexoLimpio.csv")
+
+#=============================================================================
 #METRICA 1
 #=============================================================================
 print(" ")
 print("METRICA 1 ")
-print("Porcentaje de consistencia nombre provincia en tablas limpias:")
+print("Porcentaje de consistencia nombre provincia en mis tablas ya limpias:")
 consulta = """
                SELECT DISTINCT provincia 
                FROM padron_ee_Limpio
@@ -439,7 +364,7 @@ print(f"{Porcentaje}%")
 #=============================================================================
 print(" ")
 print("METRICA 2")
-print("Porcentaje de consistencia nombre departamento en tablas limpias:")
+print("Porcentaje de consistencia nombre departamento en mis tablas ya limpias:")
 consulta = """
                SELECT DISTINCT departamento, provincia
                FROM padron_ee_Limpio 
@@ -475,7 +400,6 @@ Porcentaje= round((Total_Coincidencias_dpto / 528 * 100),1)
 print(f"{Porcentaje}%")
 
 
-#Exporto a csv
-dep_ac_sex_limpio.to_csv("DepartamentoActivdadySexoLimpio.csv", index=False)
-padron_ee_Limpio.to_csv("PadronEstablecimientosEducativosLimpio.csv",index=False)
+
+
 
