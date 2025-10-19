@@ -119,13 +119,13 @@ padron_ee_Limpio.dropna(thresh=4,inplace=True)
 consulta = ''' 
              SELECT anio, in_departamentos, departamento_normalizado AS departamento, provincia_id, provincia_normalizado_cambia_CABA AS provincia, clae6, genero, Empleo, establecimientos, empresas_exportadoras,
              FROM dep_ac_sex
-             WHERE anio = 2022
+             WHERE anio = '2022';
            '''
 dep_ac_sex_limpio = dd.query(consulta).df()
 
 consulta = ''' 
-             SELECT  in_departamentos, departamento_normalizado AS departamento, provincia_id, provincia_normalizado_cambia_CABA AS provincia, clae6, genero, Empleo, establecimientos, empresas_exportadoras,
-             FROM dep_ac_sex
+             SELECT  in_departamentos, departamento, provincia_id, provincia, clae6, genero, Empleo, establecimientos, empresas_exportadoras,
+             FROM dep_ac_sex_limpio
              
            '''
 dep_ac_sex_limpio = dd.query(consulta).df()
