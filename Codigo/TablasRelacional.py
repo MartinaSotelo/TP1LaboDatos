@@ -12,8 +12,6 @@ import numpy as np
 
 #%%
 carpeta = "/"
-
-
 EstEducativos = pd.read_csv(carpeta+"PadronEstablecimientosEducativosLimpio.csv")
 EstProductivos = pd.read_csv(carpeta+"DepartamentoActivdadySexoLimpio.csv")
 actividades = pd.read_csv(carpeta+"actividades_establecimientos.csv")
@@ -33,7 +31,7 @@ RANGO EDADES (RangoEdad)
 #         PROVINCIA
 #============================================
 consulta = """
-               SELECT DISTINCT provincia, provincia_id
+               SELECT DISTINCT Provincia, provincia_id
                FROM EstProductivos
         """
 
@@ -242,16 +240,12 @@ consulta = """
 ActividadProductiva_Departamento= dd.query(consulta).df()
 
 consulta = """
-                SELECT clae6, in_departamentos, empleados, empresas_exportadoras,
-                SUM(CASE WHEN genero = 'Mujeres' THEN empleo ELSE 0 END) AS empleadas_mujeres,
-                FROM ActividadProductiva_Departamento1
-                GROUP BY clae6, in_departamentos, empresas_exportadoras, empleados;
+                SELECT clae6, in_departamentos, empleados, empresas_exportadoras AS EmpresasExportadoras_EmpleanMujeres,
+                SUM(CASE WHEN genero = 'Mujeres' THEN empleo ELSE 0 END) AS EmpleadasMujeres,
+                FROM ActividadProductiva_Departamento
+                GROUP BY clae6, in_departamentos, EmpresasExportadoras_EmpleanMujeres, empleados;
                
                
         """
 
-ActividadProductiva_Departamento= dd.query(consulta).df() Genero = 'Mujeres' THEN Empleo ELSE NULL END AS mujeres_empleadas,
-               FROM EstProductivos
-        """
-
-actividadproductiva_departamento= dd.query(consulta).df()
+ActividadProductiva_Departamento= dd.query(consulta).df()
