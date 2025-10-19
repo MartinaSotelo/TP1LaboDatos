@@ -12,6 +12,7 @@ import numpy as np
 
 #%%
 carpeta = "/"
+
 EstEducativos = pd.read_csv(carpeta+"PadronEstablecimientosEducativosLimpio.csv")
 EstProductivos = pd.read_csv(carpeta+"DepartamentoActivdadySexoLimpio.csv")
 actividades = pd.read_csv(carpeta+"actividades_establecimientos.csv")
@@ -31,7 +32,7 @@ RANGO EDADES (RangoEdad)
 #         PROVINCIA
 #============================================
 consulta = """
-               SELECT DISTINCT Provincia, provincia_id
+               SELECT DISTINCT Provincia, provincia_id as Provincia_id
                FROM EstProductivos
         """
 
@@ -41,7 +42,7 @@ Provincia = dd.query(consulta).df()
 #         DEPARTAMENTO
 #============================================
 consulta = """
-               SELECT DISTINCT in_departamentos AS Departamento_id, UPPER(departamento) AS departamento
+               SELECT DISTINCT in_departamentos AS Departamento_id, UPPER(departamento) AS Departamento
                FROM EstProductivos
         """
 
@@ -62,18 +63,18 @@ EstablecimientoEducativo = dd.query(consulta).df()
 #============================================
 
 dd.query("""
-    DROP TABLE IF EXISTS nivel_educativo;
-    CREATE TABLE nivel_educativo (
+    DROP TABLE IF EXISTS NivelEducativo;
+    CREATE TABLE NivelEducativo (
         Nivel VARCHAR(100) PRIMARY KEY
     );
 """)
 
 dd.query("""
-    INSERT INTO nivel_educativo (Nivel)
+    INSERT INTO NivelEducativo (Nivel)
     VALUES ('Jardin'), ('Primario'), ('Secundario'), ('SNU');
 """)
 
-NivelEducativo = dd.query("SELECT * FROM nivel_educativo").df()
+NivelEducativo = dd.query("SELECT * FROM NivelEducativo").df()
 
 #============================================
 #        ACTIVIDAD PRODUCTIVA
@@ -90,18 +91,18 @@ ActividadProductiva = dd.query(consulta).df()
 #============================================
 
 dd.query("""
-    DROP TABLE IF EXISTS rango_edades;
-    CREATE TABLE rango_edades (
+    DROP TABLE IF EXISTS RangoEdades;
+    CREATE TABLE RangoEdades (
         Rango VARCHAR(100) PRIMARY KEY
     );
 """)
 
 dd.query("""
-    INSERT INTO rango_edades (Rango)
+    INSERT INTO RangoEdades (Rango)
     VALUES ('rango_0_5'), ('rango_6_12'), ('rango_13_17'), ('mayores_18');
 """)
 
-RangoEdades = dd.query("SELECT * FROM rango_edades").df()
+RangoEdades = dd.query("SELECT * FROM RangoEdades").df()
 
 #%%
 '''
@@ -115,7 +116,7 @@ ACTIVIDAD_PRODUCTIVA-DEPARTAMENTO (Clae6, Departamento_id, empleados, empleadas_
 #        DEPARTAMENTO-PROVINCIA
 #============================================
 consulta = """
-               SELECT DISTINCT in_departamentos AS Departamento_id, provincia_id
+               SELECT DISTINCT in_departamentos AS Departamento_id, provincia_id as Provincia_id
                FROM EstProductivos
         """
 
@@ -128,7 +129,7 @@ consulta = """
                SELECT Departamento_id, rango_0_5, rango_6_12, rango_13_18, mayores_18
                FROM Departamento
                JOIN PoblacionEdad
-               ON PoblacionEdad.id_areas = departamento.Departamento_id
+               ON PoblacionEdad.id_areas = Departamento.Departamento_id
         """
 
 Departamento_RangoEdades = dd.query(consulta).df()
@@ -175,25 +176,25 @@ EstablecimientoEducativo_NivelEducativo = dd.query(consulta).df()
 
 #Puse Nivel Educativo como una sola columna
 consulta = """
-               SELECT Cue, 'jardin' AS 'nivel educativo'
+               SELECT Cue, 'Jardin' AS 'NivelEducativo'
                FROM EstablecimientoEducativo_NivelEducativo
-               WHERE jardin = 1
+               WHERE Jardin = 1
                
                UNION ALL
                
-               SELECT Cue, 'Primario' AS 'nivel educativo'
+               SELECT Cue, 'Primario' AS 'NivelEducativo'
                FROM EstablecimientoEducativo_NivelEducativo
                WHERE primario = 1
                
                UNION ALL
                
-               SELECT Cue, 'Secundario' AS 'nivel educativo'
+               SELECT Cue, 'Secundario' AS 'NivelEducativo'
                FROM EstablecimientoEducativo_NivelEducativo
                WHERE Secundario = 1
                
                UNION ALL
                
-               SELECT Cue, 'SNU' AS 'nivel educativo'
+               SELECT Cue, 'SNU' AS 'NivelEducativo'
                FROM EstablecimientoEducativo_NivelEducativo
                WHERE SNU = 1
                
@@ -219,7 +220,7 @@ RangoEdades_NivelEducativo = pd.DataFrame(edad_nivelEducativo)
 #ACTIVIDAD_PRODUCTIVA-DEPARTAMENTO (Clae6, Departamento_id, empleados, empleadas_mujeres, empresas_exportadoras, empresas_exportadoras_mujeres)
 
 consulta = """
-               SELECT clae6, in_departamentos, SUM(Empleo) AS empleados
+               SELECT clae6 as Clae6, in_departamentos AS Departamento_id, SUM(Empleo) AS Empleados
                FROM EstProductivos
                GROUP BY Clae6, in_departamentos
                ORDER BY In_departamentos, clae6
@@ -229,10 +230,10 @@ ActividadProductiva_Departamento= dd.query(consulta).df()
 
 
 consulta = """
-               SELECT A.clae6, A.in_departamentos, A.empleados, E.genero, E.empleo, E.empresas_exportadoras
+               SELECT A.Clae6, A.Departamento_id, A.Empleados, E.genero, E.Empleo, E.Empresas_exportadoras
                FROM ActividadProductiva_Departamento AS A
                JOIN EstProductivos AS E
-               ON E.clae6=A.Clae6 AND E.in_departamentos=A.in_departamentos,
+               ON E.clae6=A.Clae6 AND E.in_departamentos=A.Departamento_id,
                
                
         """
@@ -240,12 +241,24 @@ consulta = """
 ActividadProductiva_Departamento= dd.query(consulta).df()
 
 consulta = """
-                SELECT clae6, in_departamentos, empleados, empresas_exportadoras AS EmpresasExportadoras_EmpleanMujeres,
+                SELECT Clae6, Departamento_id, Empleados, Empresas_exportadoras AS EmpresasExportadoras_EmpleanMujeres,
                 SUM(CASE WHEN genero = 'Mujeres' THEN empleo ELSE 0 END) AS EmpleadasMujeres,
                 FROM ActividadProductiva_Departamento
-                GROUP BY clae6, in_departamentos, EmpresasExportadoras_EmpleanMujeres, empleados;
+                GROUP BY clae6, Departamento_id, EmpresasExportadoras_EmpleanMujeres, empleados;
                
                
         """
 
 ActividadProductiva_Departamento= dd.query(consulta).df()
+
+#DEPARTAMENTO_ESTABLECIMIENTO EDUCATIVO (Departamento_id, Cue)
+		
+consulta = """
+                SELECT Cue, D.Departamento_id
+                FROM EstEducativos AS E
+                INNER JOIN
+                Departamento AS D
+                ON  UPPER(E.departamento) = D.Departamento
+        """
+
+Departamento_EstablecimientoEducativo= dd.query(consulta).df()
