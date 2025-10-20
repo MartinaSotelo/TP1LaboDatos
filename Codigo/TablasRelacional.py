@@ -12,10 +12,8 @@ import numpy as np
 
 #%%
 carpeta = "/"
-
 EstEducativos = pd.read_csv(carpeta+"PadronEstablecimientosEducativosLimpio.csv")
 EstProductivos = pd.read_csv(carpeta+"DepartamentoActivdadySexoLimpio.csv")
-actividades = pd.read_csv(carpeta+"actividades_establecimientos.csv")
 PoblacionEdad= pd.read_csv(carpeta+"PadronPoblacionLimpio.csv")
 
 #%%
@@ -27,12 +25,12 @@ NIVEL EDUCATIVO (NivelEducativo)
 ACTIVIDAD PRODUCTIVA (Clae6)
 RANGO EDADES (RangoEdad)
 '''
-
+# casteo todo los ids como varchar por las dudas. 
 #============================================
 #         PROVINCIA
 #============================================
 consulta = """
-               SELECT DISTINCT Provincia, provincia_id as Provincia_id
+               SELECT DISTINCT Provincia, CAST(provincia_id AS VARCHAR) as Provincia_id
                FROM EstProductivos
         """
 
@@ -40,10 +38,11 @@ Provincia = dd.query(consulta).df()
 
 #============================================
 #         DEPARTAMENTO
-#============================================
+#===========================================
 consulta = """
-               SELECT DISTINCT in_departamentos AS Departamento_id, UPPER(departamento) AS Departamento
+               SELECT DISTINCT CAST(in_departamentos AS VARCHAR) AS Departamento_id, UPPER(departamento) AS Departamento
                FROM EstProductivos
+
         """
 
 Departamento = dd.query(consulta).df()
@@ -52,7 +51,7 @@ Departamento = dd.query(consulta).df()
 #        ESTABLECIMIENTO EDUCATIVO
 #============================================
 consulta = """
-               SELECT Cue
+               SELECT CAST(Cue AS VARCHAR) AS Cue
                FROM EstEducativos
            """
 
@@ -80,7 +79,7 @@ NivelEducativo = dd.query("SELECT * FROM NivelEducativo").df()
 #        ACTIVIDAD PRODUCTIVA
 #============================================
 consulta = """
-               SELECT DISTINCT clae6
+               SELECT DISTINCT CAST(clae6 AS VARCHAR) AS Clae6
                FROM EstProductivos
            """
 
@@ -116,7 +115,7 @@ ACTIVIDAD_PRODUCTIVA-DEPARTAMENTO (Clae6, Departamento_id, empleados, empleadas_
 #        DEPARTAMENTO-PROVINCIA
 #============================================
 consulta = """
-               SELECT DISTINCT in_departamentos AS Departamento_id, provincia_id as Provincia_id
+               SELECT DISTINCT CAST(in_departamentos AS VARCHAR) AS Departamento_id, CAST(provincia_id AS VARCHAR) AS Provincia_id
                FROM EstProductivos
         """
 
@@ -126,7 +125,7 @@ Departamento_Provincia = dd.query(consulta).df()
 #         DEPARTAMENTO-RANGO EDADES 
 #============================================
 consulta = """
-               SELECT Departamento_id, rango_0_5, rango_6_12, rango_13_18, mayores_18
+               SELECT Departamento_id, rango_0_5, rango_6_12, rango_13_17, mayores_18
                FROM Departamento
                JOIN PoblacionEdad
                ON PoblacionEdad.id_areas = Departamento.Departamento_id
@@ -134,6 +133,22 @@ consulta = """
 
 Departamento_RangoEdades = dd.query(consulta).df()
 
+############################
+#faltan departamentos?
+consulta = """
+               SELECT D.Departamento_id, D.Departamento, DR.Departamento_id, 
+               FROM Departamento AS D
+               LEFT JOIN 
+               Departamento_RangoEdades AS DR
+               ON DR.Departamento_id = D.Departamento_id
+               WHERE DR.Departamento_id IS NULL
+        """
+
+FaltanDEPT = dd.query(consulta).df()
+
+#veo que ushuaia, rio grande y chascomus difieren las id del censo 2022 y 
+# departamentos(tabla relacional) osea del dataset 'actividad-sexo-departamento'.
+#####################################
 consulta = """
                SELECT Departamento_id, rango_0_5 AS Cantidad_Habitantes, 'rango_0_5' AS RangoEdad
                FROM Departamento_RangoEdades
@@ -141,7 +156,7 @@ consulta = """
                SELECT Departamento_id, rango_6_12 AS Cantidad_Habitantes, 'rango_6_12' AS RangoEdad
                FROM Departamento_RangoEdades
                UNION ALL
-               SELECT Departamento_id, rango_13_18 AS Cantidad_Habitantes, 'rango_13_18 ' AS RangoEdad
+               SELECT Departamento_id, rango_13_17 AS Cantidad_Habitantes, 'rango_13_17' AS RangoEdad
                FROM Departamento_RangoEdades
                UNION ALL
                SELECT Departamento_id, mayores_18 AS Cantidad_Habitantes, 'mayores_18' AS RangoEdad
@@ -220,10 +235,10 @@ RangoEdades_NivelEducativo = pd.DataFrame(edad_nivelEducativo)
 #ACTIVIDAD_PRODUCTIVA-DEPARTAMENTO (Clae6, Departamento_id, empleados, empleadas_mujeres, empresas_exportadoras, empresas_exportadoras_mujeres)
 
 consulta = """
-               SELECT clae6 as Clae6, in_departamentos AS Departamento_id, SUM(Empleo) AS Empleados
+               SELECT CAST(clae6 AS VARCHAR) AS Clae6, CAST(in_departamentos AS VARCHAR) AS Departamento_id, SUM(Empleo) AS Empleados
                FROM EstProductivos
-               GROUP BY Clae6, in_departamentos
-               ORDER BY In_departamentos, clae6
+               GROUP BY Clae6, Departamento_id
+               ORDER BY Departamento_id, Clae6
         """
 
 ActividadProductiva_Departamento= dd.query(consulta).df()
@@ -241,10 +256,10 @@ consulta = """
 ActividadProductiva_Departamento= dd.query(consulta).df()
 
 consulta = """
-                SELECT Clae6, Departamento_id, Empleados, Empresas_exportadoras AS EmpresasExportadoras_EmpleanMujeres,
+                SELECT Clae6, Departamento_id, Empleados, Empresas_exportadoras,
                 SUM(CASE WHEN genero = 'Mujeres' THEN empleo ELSE 0 END) AS EmpleadasMujeres,
                 FROM ActividadProductiva_Departamento
-                GROUP BY clae6, Departamento_id, EmpresasExportadoras_EmpleanMujeres, empleados;
+                GROUP BY clae6, Departamento_id, Empresas_Exportadoras, empleados;
                
                
         """
