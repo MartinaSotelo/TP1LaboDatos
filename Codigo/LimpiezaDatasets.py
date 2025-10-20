@@ -181,6 +181,16 @@ indices_resumen.remove(56585) #saco los indices que ya elimine
 indices_resumen.remove(56586)
 
 padron_poblacion.drop(indices_resumen, inplace=True)
+#%%===========================================================================
+#Cambio el id de 'ushuaia', 'chascomus' y 'rio grande' para que coincida 
+#con el resto de datasets
+#=============================================================================
+consulta = ''' 
+                SELECT Edad, Casos,
+                REPLACE(REPLACE(REPLACE(CAST(id_areas AS VARCHAR), '94015', '94014'), '6218' , '6217'), '94008', '94007') AS 'id_areas'
+                FROM padron_poblacion;
+            '''
+padron_poblacion_CambioIds= dd.query(consulta).df()
 
 #%%=============================================================================
 #Agrupamos padron_poblacion según el rango de edad.
@@ -191,17 +201,17 @@ consulta = '''
                     CASE
                         WHEN Edad BETWEEN 0 AND 5 THEN '0-5'
                         WHEN Edad BETWEEN 6 AND 12 THEN '6-12'
-                        WHEN Edad BETWEEN 13 AND 18 THEN '13-18'
+                        WHEN Edad BETWEEN 13 AND 17 THEN '13-17'
                         ELSE 'Mayores de 18'
                     END AS rango_nombre,
                     SUM(Casos) AS cantidad
-                FROM padron_poblacion
+                FROM padron_poblacion_CambioIds
                 GROUP BY rango_nombre, id_areas
                 ORDER BY id_areas,
                     CASE 
                         WHEN rango_nombre = '0-5' THEN 1
                         WHEN rango_nombre = '6-12' THEN 2
-                        WHEN rango_nombre = '13-18' THEN 3
+                        WHEN rango_nombre = '13-17' THEN 3
                         WHEN rango_nombre = 'Mayores de 18' THEN 4
                     END;
             '''
@@ -213,7 +223,7 @@ consulta = """
                  id_areas,
                  SUM(CASE WHEN rango_nombre = '0-5' THEN cantidad END) AS rango_0_5,
                  SUM(CASE WHEN rango_nombre = '6-12' THEN cantidad END) AS rango_6_12,
-                 SUM(CASE WHEN rango_nombre = '13-18' THEN cantidad END) AS rango_13_18,
+                 SUM(CASE WHEN rango_nombre = '13-17' THEN cantidad END) AS rango_13_17,
                  SUM(CASE WHEN rango_nombre = 'Mayores de 18' THEN cantidad END) AS mayores_18
                  FROM padron_poblacion_rangos
                  GROUP BY id_areas
@@ -228,4 +238,3 @@ padron_poblacion_acomodado = dd.query(consulta).df()
 padron_poblacion_acomodado.to_csv("PadronPoblacionLimpio.csv", index=False)
 dep_ac_sex_limpio.to_csv("DepartamentoActivdadySexoLimpio.csv", index=False)
 padron_ee_Limpio.to_csv("PadronEstablecimientosEducativosLimpio.csv",index=False)
-
