@@ -14,13 +14,12 @@ import numpy as np
 # Importamos los datasets que vamos a utilizar en este programa
 #=============================================================================
 
-carpeta = "C:/Users/perei/Downloads/Datos_para_el_TP/"
+carpeta = ""
 
 padron_ee = pd.read_excel(carpeta + "2022_padron_oficial_establecimientos_educativos.xlsx", skiprows=6)
 actividades = pd.read_csv(carpeta + "actividades_establecimientos.csv")
 dep_ac_sex = pd.read_csv(carpeta + "Datos_por_departamento_actividad_y_sexo.csv")
 padron_poblacion = pd.read_excel(carpeta + "padron_poblacion.xlsX", usecols=[1,2], names=["Edad", "Casos"], skiprows=12)
-
 
 #%%=========================================================================== 
 #         LIMPIEZA DATASETS DE EST. EDUCATIVOS Y EST. PRODUCTIVOS
@@ -31,32 +30,12 @@ padron_poblacion = pd.read_excel(carpeta + "padron_poblacion.xlsX", usecols=[1,2
 consulta = ''' 
              SELECT anio, in_departamentos, REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(UPPER(departamento),'Á', 'A'),'É', 'E'),'Í', 'I'),'Ó', 'O'),'Ú', 'U') AS departamento, provincia_id, REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(UPPER(provincia),'Á', 'A'),'É', 'E'),'Í', 'I'),'Ó', 'O'),'Ú', 'U'), 'CABA', 'CIUDAD DE BUENOS AIRES') AS provincia, clae6, genero, Empleo, establecimientos, empresas_exportadoras,
              FROM dep_ac_sex
+             WHERE anio = '2022'
            '''
-dep_ac_sex = dd.query(consulta).df()
-
-consulta = '''
-              SELECT anio, in_departamentos, provincia_id, provincia, clae6, genero, Empleo, establecimientos, empresas_exportadoras,
-              REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE
-              (departamento),'coronel de marina l rosales','coronel de marina leonardo rosales' 
-              ),'1§ de mayo','1° de mayo'                                                             
-              ),'mayor luis j fontana','mayor luis j. fontana'                                                      
-              ),'o higgins','ohiggins'                                                       
-              ),'doctor manuel belgrano','dr. manuel belgrano'
-              ),'general ocampo','general ortiz de ocampo'                                                     
-              ), 'coronel felipe varela','general felipe varela'
-              ), 'general angel v penaloza','angel vicente penaloza'
-              ),'general juan f quiroga','general juan facundo quiroga'
-              ),'libertador grl san martin','libertador general san martin'
-              ),'general juan martin de pueyrredon', 'juan martin de pueyrredon'
-              ), 'antartida argentina', 'antartida argentina' 
-              ),'juan b alberdi','juan bautista alberdi'
-              ), 'juan f ibarra', 'juan felipe ibarra '
-              ) AS departamento
-              FROM dep_ac_sex
-              WHERE anio = '2022'
-           '''       
-     # antartida argentina lo cambia por lo mismo      
 dep_ac_sex_limpio = dd.query(consulta).df()
+#%%
+   
+
 # consulta = '''
 #               SELECT anio, in_departamentos, departamento, provincia_id, provincia_normalizado, clae6, genero, Empleo, establecimientos, empresas_exportadoras,
 #               REPLACE (provincia_normalizado, 'CABA', 'CIUDAD DE BUENOS AIRES' ) as provincia_normalizado_cambia_CABA
@@ -69,13 +48,35 @@ dep_ac_sex_limpio = dd.query(consulta).df()
 consulta = ''' 
               SELECT REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(UPPER(Jurisdicción),'Á', 'A'),'É', 'E'),'Í', 'I'),'Ó', 'O'),'Ú', 'U') AS provincia, cueanexo AS Cue, REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(UPPER(Departamento),'Á', 'A'),'É', 'E'),'Í', 'I'),'Ó', 'O'),'Ú', 'U') AS departamento, "Nivel inicial - Jardín maternal" AS Jardin_maternal, "Nivel inicial - Jardín de infantes" AS Jardin_infantes, Primario, Secundario, SNU, "Secundario - INET" AS Secundario_INET, "SNU - INET" AS SNU_INET,
               FROM padron_ee
-              WHERE Común = '1'      
-             
+              WHERE Común = '1'
            '''        
         
 padron_ee = dd.query(consulta).df()
 padron_ee.replace(' ', np.nan, inplace=True)
 #%%
+
+consulta = '''
+              SELECT provincia, Cue,
+              REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE
+              (departamento,'CORONEL DE MARINA L ROSALES','CORONEL DE MARINA LEONARDO ROSALES' 
+              ),'1§ DE MAYO','1° DE MAYO'                                                             
+              ),'MAYOR LUIS J FONTANA','MAYOR LUIS J. FONTANA'                                                      
+              ),'O HIGGINGS','OHIGGINGS'                                                       
+              ),'DOCTOR MANUEL BELGRANO','DR. MANUEL BELGRANO'
+              ),'GENERAL OCAMPO','GENERAL ORTIZ DE OCAMPO'                                                     
+              ), 'CORONEL FELIPE VARELA','GENERAL FELIPE VARELA'
+              ), 'GENERAL ANGEL V PENALOZA','ANGEL VICENTE PENALOZA'
+              ),'GENERAL JUAN F QUIROGA','GENERAL JUAN FACUNDO QUIROGA'
+              ),'LIBERTADOR GRL SAN MARTIN','LIBERTADOR GENERAL SAN MARTIN'
+              ),'GENERAL JUAN MARTIN DE PUEYRREDON', 'JUAN MARTIN DE PUEYRREDON' 
+              ),'JUAN B ALBERDI','JUAN BAUTISTA ALBERDI'
+              ), 'JUAN F IBARRA','JUAN FELIPE IBARRA'
+              ) AS departamento,
+              Jardin_maternal, Jardin_infantes, Primario, Secundario, SNU, Secundario_INET, SNU_INET,
+              FROM padron_ee
+           '''       
+
+padron_ee = dd.query(consulta).df()
 
 consulta = """
                SELECT provincia, departamento, Cue, 
