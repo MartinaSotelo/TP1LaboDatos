@@ -234,7 +234,7 @@ padron_poblacion_rangos= dd.query(consulta).df()
 #armo columnas para cada rango edad
 consulta = """
            SELECT 
-                 id_areas,
+                 id_areas AS Departamento_id,
                  SUM(CASE WHEN rango_nombre = '0-5' THEN cantidad END) AS rango_0_5,
                  SUM(CASE WHEN rango_nombre = '6-12' THEN cantidad END) AS rango_6_12,
                  SUM(CASE WHEN rango_nombre = '13-17' THEN cantidad END) AS rango_13_17,
@@ -242,7 +242,6 @@ consulta = """
                  FROM padron_poblacion_rangos
                  GROUP BY id_areas
                  ORDER BY id_areas ASC
-
            """
 padron_poblacion_acomodado = dd.query(consulta).df()
 
