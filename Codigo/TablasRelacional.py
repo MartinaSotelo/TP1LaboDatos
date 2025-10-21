@@ -30,7 +30,7 @@ RANGO EDADES (RangoEdad)
 #         PROVINCIA
 #============================================
 consulta = """
-               SELECT DISTINCT Provincia, CAST(provincia_id AS VARCHAR) as Provincia_id
+               SELECT DISTINCT CAST(provincia_id AS VARCHAR) as Provincia_id, provincia
                FROM EstProductivos
         """
 
@@ -130,19 +130,6 @@ consulta = """
 
 Departamento_RangoEdades = dd.query(consulta).df()
 
-############################
-#faltan departamentos?
-# consulta = """
-#                SELECT D.Departamento_id, D.Departamento, DR.Departamento_id, 
-#                FROM Departamento AS D
-#                LEFT JOIN 
-#                Departamento_RangoEdades AS DR
-#                ON DR.Departamento_id = D.Departamento_id
-#                WHERE DR.Departamento_id IS NULL
-#         """
-
-# FaltanDEPT = dd.query(consulta).df()
-
 #veo que ushuaia, rio grande y chascomus difieren las id del censo 2022 y 
 # departamentos(tabla relacional) osea del dataset 'actividad-sexo-departamento'.
 #####################################
@@ -168,19 +155,7 @@ Departamento_RangoEdades = dd.query(consulta).df()
 #============================================
 #Junté los técnicos con los normales
 consulta = """
-               SELECT Cue, Primario,
-                   CASE
-                       WHEN Jardin_infantes = 1 OR Jardin_maternal = 1 THEN 1
-                       ELSE NULL
-                       END AS Jardin,
-                   CASE
-                       WHEN Secundario = 1 OR Secundario_INET = 1 THEN 1
-                       ELSE NULL
-                       END AS Secundario,
-                   CASE
-                       WHEN SNU = 1 OR SNU_INET = 1 THEN 1
-                       ELSE NULL
-                       END AS SNU
+               SELECT Cue, Primario, Jardin, Secundario, SNU
                FROM EstEducativos
         """
 
@@ -240,80 +215,50 @@ consulta = """
 
 ActividadProductiva_Departamento= dd.query(consulta).df()
 
-
 consulta = """
                SELECT A.Clae6, A.Departamento_id, A.Empleados, E.genero, E.Empleo, E.Empresas_exportadoras
                FROM ActividadProductiva_Departamento AS A
                JOIN EstProductivos AS E
-               ON E.clae6=A.Clae6 AND E.in_departamentos=A.Departamento_id,
-               
-               
+               ON E.clae6=A.Clae6 AND E.in_departamentos=A.Departamento_id, 
         """
 
-ActividadProductiva_Departamento= dd.query(consulta).df()
+ActividadProductiva_Departamento = dd.query(consulta).df()
 
 consulta = """
                 SELECT Clae6, Departamento_id, Empleados, Empresas_exportadoras,
-                SUM(CASE WHEN genero = 'Mujeres' THEN empleo ELSE 0 END) AS EmpleadasMujeres,
+                SUM(CASE WHEN genero = 'Mujeres' THEN empleo ELSE 0 END) AS EmpleadasMujeres, genero, Empleo
                 FROM ActividadProductiva_Departamento
                 GROUP BY clae6, Departamento_id, Empresas_Exportadoras, empleados;
-               
-               
         """
 
 ActividadProductiva_Departamento= dd.query(consulta).df()
-
+#%%
 #DEPARTAMENTO_ESTABLECIMIENTO EDUCATIVO (Departamento_id, Cue)
 		
 
-consulta = """
-           SELECT P.Provincia, P.Provincia_id, D.Departamento_id, D.Departamento
-           FROM Provincia AS P
-           INNER JOIN
-           Departamento_Provincia AS DP
-           ON P.Provincia_id = DP.Provincia_id
-           INNER JOIN
-           Departamento AS D
-           ON D.Departamento_id=DP.Departamento_id
-           """
+# consulta = """
+#            SELECT P.Provincia, P.Provincia_id, D.Departamento_id, D.Departamento
+#            FROM Provincia AS P
+#            INNER JOIN
+#            Departamento_Provincia AS DP
+#            ON P.Provincia_id = DP.Provincia_id
+#            INNER JOIN
+#            Departamento AS D
+#            ON D.Departamento_id = DP.Departamento_id
+#            """
 
-test = dd.query(consulta).df()
+# test = dd.query(consulta).df()
 
 consulta = """
-                SELECT T.Departamento, E.Cue
-                FROM Test as T
-                INNER JOIN
-                EstEducativos AS EE
-                ON T.Provincia = EE.Provincia
+                SELECT Cue, D.Departamento_id
+                FROM EstEducativos AS E
                 INNER JOIN
                 Departamento AS D
-                ON D.Departamento_id=DP.Departamento_id
-                INNER JOIN EstEducativos AS E
-                ON E.Departamento = D.Departamento AND E.Provincia = P.Provincia
+                ON  UPPER(E.departamento) = D.Departamento
         """
+
 Departamento_EstablecimientoEducativo= dd.query(consulta).df()
 
-# consulta = """
-#                 SELECT D.Departamento, E.Cue
-#                 FROM Provincia AS P
-#                 INNER JOIN
-#                 Departamento_Provincia AS DP
-#                 ON P.Provincia_id = DP.Provincia_id
-#                 INNER JOIN
-#                 Departamento AS D
-#                 ON D.Departamento_id=DP.Departamento_id
-#                 INNER JOIN EstEducativos AS E
-#                 ON E.Departamento = D.Departamento AND E.Provincia = P.Provincia
-#         """
-
-# Departamento_EstablecimientoEducativo= dd.query(consulta).df()
-
-consulta = """
-                SELECT DISTINCT Cue
-                FROM EstablecimientoEducativo_NivelEducativo
-        """
-
-a = dd.query(consulta).df()
 
 
 
