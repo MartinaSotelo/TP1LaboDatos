@@ -226,7 +226,7 @@ ActividadProductiva_Departamento = dd.query(consulta).df()
 
 consulta = """
                 SELECT Clae6, Departamento_id, Empleados, Empresas_exportadoras,
-                SUM(CASE WHEN genero = 'Mujeres' THEN empleo ELSE 0 END) AS EmpleadasMujeres, genero, Empleo
+                SUM(CASE WHEN genero = 'Mujeres' THEN empleo ELSE 0 END) AS EmpleadasMujeres
                 FROM ActividadProductiva_Departamento
                 GROUP BY clae6, Departamento_id, Empresas_Exportadoras, empleados;
         """
