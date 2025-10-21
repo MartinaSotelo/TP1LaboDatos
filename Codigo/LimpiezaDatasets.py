@@ -14,7 +14,7 @@ import numpy as np
 # Importamos los datasets que vamos a utilizar en este programa
 #=============================================================================
 
-carpeta = "path/tpLabo1/"
+carpeta = ""
 
 padron_ee = pd.read_excel(carpeta + "2022_padron_oficial_establecimientos_educativos.xlsx", skiprows=6)
 actividades = pd.read_csv(carpeta + "actividades_establecimientos.csv")
@@ -58,7 +58,7 @@ padron_ee = dd.query(consulta).df()
 #=============================================================================
 consulta = ''' 
              SELECT anio, in_departamentos, departamento, provincia_id, provincia_normalizado_cambia_CABA , clae6, genero, Empleo, establecimientos, empresas_exportadoras,
-                 REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(LOWER(departamento),'á', 'a'),'é', 'e'),'í', 'i'),'ó', 'o'),'ú', 'u') AS departamento_sin_tildes
+                 REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(UPPER(departamento),'á', 'a'),'é', 'e'),'í', 'i'),'ó', 'o'),'ú', 'u') AS departamento_sin_tildes
              FROM dep_ac_sex
            '''
 dep_ac_sex = dd.query(consulta).df()
@@ -89,7 +89,7 @@ dep_ac_sex = dd.query(consulta).df()
 
 consulta = ''' 
               SELECT provincia_normalizado, cueanexo, Departamento, "Nivel inicial - Jardín maternal" , "Nivel inicial - Jardín de infantes", Primario, Secundario, SNU, "Secundario - INET", "SNU - INET" ,
-              REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(LOWER(Departamento),'á', 'a'),'é', 'e'),'í', 'i'),'ó', 'o'),'ú', 'u') AS departamento_normalizado
+              REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(UPPER(Departamento),'á', 'a'),'é', 'e'),'í', 'i'),'ó', 'o'),'ú', 'u') AS departamento_normalizado
               FROM padron_ee
              
            '''
@@ -117,16 +117,9 @@ padron_ee_Limpio.dropna(thresh=4,inplace=True)
 #=============================================================================
 
 consulta = ''' 
-             SELECT anio, in_departamentos, departamento_normalizado AS departamento, provincia_id, provincia_normalizado_cambia_CABA AS provincia, clae6, genero, Empleo, establecimientos, empresas_exportadoras,
+             SELECT in_departamentos, departamento_normalizado AS departamento, provincia_id, provincia_normalizado_cambia_CABA AS provincia, clae6, genero, Empleo, establecimientos, empresas_exportadoras,
              FROM dep_ac_sex
              WHERE anio = '2022';
-           '''
-dep_ac_sex_limpio = dd.query(consulta).df()
-
-consulta = ''' 
-             SELECT  in_departamentos, departamento, provincia_id, provincia, clae6, genero, Empleo, establecimientos, empresas_exportadoras,
-             FROM dep_ac_sex_limpio
-             
            '''
 dep_ac_sex_limpio = dd.query(consulta).df()
 
@@ -195,7 +188,7 @@ padron_poblacion_CambioIds= dd.query(consulta).df()
 #%%=============================================================================
 #Agrupamos padron_poblacion según el rango de edad.
 #=============================================================================
-#agrupo los rango de edad
+#agrupo los rangos de edad
 consulta = ''' 
                 SELECT id_areas,
                     CASE
@@ -232,9 +225,26 @@ consulta = """
            """
 padron_poblacion_acomodado = dd.query(consulta).df()
 
+
+
+
+#%%
+#Hay que cambiar los nombres de los deptos por los ids de los deptos
+consulta = ''' 
+              SELECT provincia_normalizado AS Provincia, cueanexo AS Cue, departamento_normalizado AS departamento, "Nivel inicial - Jardín maternal" AS "Jardin_Maternal", "Nivel inicial - Jardín de infantes" AS "Jardin_Infantes", Primario, Secundario, SNU, "Secundario - INET" AS Secundario_INET, "SNU - INET" AS SNU_INET 
+              FROM padron_ee
+             
+           '''
+padron_ee_Limpio = dd.query(consulta).df()
+
+
+
+
+
+#%%
 #=============================================================================
 #Exporto todas las tablas a csv
 #=============================================================================
 padron_poblacion_acomodado.to_csv("PadronPoblacionLimpio.csv", index=False)
 dep_ac_sex_limpio.to_csv("DepartamentoActivdadySexoLimpio.csv", index=False)
-padron_ee_Limpio.to_csv("PadronEstablecimientosEducativosLimpio.csv",index=False)
+padron_ee_Limpio.to_csv("PadronEstablecimientosEducativosLimpio.csv",index=False) #Está la columna id provincia y nombre provincia
