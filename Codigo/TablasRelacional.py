@@ -11,7 +11,7 @@ import re
 import numpy as np
 
 #%%
-carpeta = "/"
+carpeta = ""
 EstEducativos = pd.read_csv(carpeta+"PadronEstablecimientosEducativosLimpio.csv")
 EstProductivos = pd.read_csv(carpeta+"DepartamentoActivdadySexoLimpio.csv")
 PoblacionEdad= pd.read_csv(carpeta+"PadronPoblacionLimpio.csv")
@@ -42,7 +42,6 @@ Provincia = dd.query(consulta).df()
 consulta = """
                SELECT DISTINCT CAST(in_departamentos AS VARCHAR) AS Departamento_id, UPPER(departamento) AS Departamento
                FROM EstProductivos
-
         """
 
 Departamento = dd.query(consulta).df()
@@ -125,47 +124,45 @@ Departamento_Provincia = dd.query(consulta).df()
 #         DEPARTAMENTO-RANGO EDADES 
 #============================================
 consulta = """
-               SELECT Departamento_id, rango_0_5, rango_6_12, rango_13_17, mayores_18
-               FROM Departamento
-               JOIN PoblacionEdad
-               ON PoblacionEdad.id_areas = Departamento.Departamento_id
+               SELECT *
+               FROM PoblacionEdad
         """
 
 Departamento_RangoEdades = dd.query(consulta).df()
 
 ############################
 #faltan departamentos?
-consulta = """
-               SELECT D.Departamento_id, D.Departamento, DR.Departamento_id, 
-               FROM Departamento AS D
-               LEFT JOIN 
-               Departamento_RangoEdades AS DR
-               ON DR.Departamento_id = D.Departamento_id
-               WHERE DR.Departamento_id IS NULL
-        """
+# consulta = """
+#                SELECT D.Departamento_id, D.Departamento, DR.Departamento_id, 
+#                FROM Departamento AS D
+#                LEFT JOIN 
+#                Departamento_RangoEdades AS DR
+#                ON DR.Departamento_id = D.Departamento_id
+#                WHERE DR.Departamento_id IS NULL
+#         """
 
-FaltanDEPT = dd.query(consulta).df()
+# FaltanDEPT = dd.query(consulta).df()
 
 #veo que ushuaia, rio grande y chascomus difieren las id del censo 2022 y 
 # departamentos(tabla relacional) osea del dataset 'actividad-sexo-departamento'.
 #####################################
-consulta = """
-               SELECT Departamento_id, rango_0_5 AS Cantidad_Habitantes, 'rango_0_5' AS RangoEdad
-               FROM Departamento_RangoEdades
-               UNION ALL
-               SELECT Departamento_id, rango_6_12 AS Cantidad_Habitantes, 'rango_6_12' AS RangoEdad
-               FROM Departamento_RangoEdades
-               UNION ALL
-               SELECT Departamento_id, rango_13_17 AS Cantidad_Habitantes, 'rango_13_17' AS RangoEdad
-               FROM Departamento_RangoEdades
-               UNION ALL
-               SELECT Departamento_id, mayores_18 AS Cantidad_Habitantes, 'mayores_18' AS RangoEdad
-               FROM Departamento_RangoEdades
-               ORDER BY Departamento_id, RangoEdad
+# consulta = """
+#                SELECT Departamento_id, rango_0_5 AS Cantidad_Habitantes, 'rango_0_5' AS RangoEdad
+#                FROM Departamento_RangoEdades
+#                UNION ALL
+#                SELECT Departamento_id, rango_6_12 AS Cantidad_Habitantes, 'rango_6_12' AS RangoEdad
+#                FROM Departamento_RangoEdades
+#                UNION ALL
+#                SELECT Departamento_id, rango_13_17 AS Cantidad_Habitantes, 'rango_13_17' AS RangoEdad
+#                FROM Departamento_RangoEdades
+#                UNION ALL
+#                SELECT Departamento_id, mayores_18 AS Cantidad_Habitantes, 'mayores_18' AS RangoEdad
+#                FROM Departamento_RangoEdades
+#                ORDER BY Departamento_id, RangoEdad
                
-        """
+#         """
 
-Departamento_RangoEdades = dd.query(consulta).df()
+# Departamento_RangoEdades = dd.query(consulta).df()
 #============================================
 # ESTABLECIMIENTO EDUCATIVO - NIVEL EDUCATIVO        
 #============================================
@@ -268,12 +265,61 @@ ActividadProductiva_Departamento= dd.query(consulta).df()
 
 #DEPARTAMENTO_ESTABLECIMIENTO EDUCATIVO (Departamento_id, Cue)
 		
+
 consulta = """
-                SELECT Cue, D.Departamento_id
-                FROM EstEducativos AS E
+           SELECT P.Provincia, P.Provincia_id, D.Departamento_id, D.Departamento
+           FROM Provincia AS P
+           INNER JOIN
+           Departamento_Provincia AS DP
+           ON P.Provincia_id = DP.Provincia_id
+           INNER JOIN
+           Departamento AS D
+           ON D.Departamento_id=DP.Departamento_id
+           """
+
+test = dd.query(consulta).df()
+
+consulta = """
+                SELECT T.Departamento, E.Cue
+                FROM Test as T
+                INNER JOIN
+                EstEducativos AS EE
+                ON T.Provincia = EE.Provincia
                 INNER JOIN
                 Departamento AS D
-                ON  UPPER(E.departamento) = D.Departamento
+                ON D.Departamento_id=DP.Departamento_id
+                INNER JOIN EstEducativos AS E
+                ON E.Departamento = D.Departamento AND E.Provincia = P.Provincia
+        """
+Departamento_EstablecimientoEducativo= dd.query(consulta).df()
+
+# consulta = """
+#                 SELECT D.Departamento, E.Cue
+#                 FROM Provincia AS P
+#                 INNER JOIN
+#                 Departamento_Provincia AS DP
+#                 ON P.Provincia_id = DP.Provincia_id
+#                 INNER JOIN
+#                 Departamento AS D
+#                 ON D.Departamento_id=DP.Departamento_id
+#                 INNER JOIN EstEducativos AS E
+#                 ON E.Departamento = D.Departamento AND E.Provincia = P.Provincia
+#         """
+
+# Departamento_EstablecimientoEducativo= dd.query(consulta).df()
+
+consulta = """
+                SELECT DISTINCT Cue
+                FROM EstablecimientoEducativo_NivelEducativo
         """
 
-Departamento_EstablecimientoEducativo= dd.query(consulta).df()
+a = dd.query(consulta).df()
+
+
+
+# Provincia.to_csv("Provincia.csv", index=False)
+# Departamento.to_csv("Departamento.csv", index=False)
+# EstablecimientoEducativo.to_csv("EstablecimientoEducativo.csv", index=False)
+# Provincia.to_csv("Provincia.csv", index=False)
+
+
