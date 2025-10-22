@@ -11,7 +11,7 @@ import re
 import numpy as np
 
 #%%
-carpeta = ""
+carpeta = "C:/Users/perei/Downloads/Datos_para_el_TP/"
 EstEducativos = pd.read_csv(carpeta+"PadronEstablecimientosEducativosLimpio.csv")
 EstProductivos = pd.read_csv(carpeta+"DepartamentoActivdadySexoLimpio.csv")
 PoblacionEdad= pd.read_csv(carpeta+"PadronPoblacionLimpio.csv")
@@ -120,36 +120,24 @@ consulta = """
 
 Departamento_Provincia = dd.query(consulta).df()
 
-#============================================
-#         DEPARTAMENTO-RANGO EDADES 
-#============================================
+
 consulta = """
-               SELECT *
+               SELECT Departamento_id, rango_0_5 AS Cantidad_Habitantes, 'rango_0_5' AS RangoEdad
                FROM PoblacionEdad
+               UNION ALL
+               SELECT Departamento_id, rango_6_12 AS Cantidad_Habitantes, 'rango_6_12' AS RangoEdad
+               FROM PoblacionEdad
+               UNION ALL
+               SELECT Departamento_id, rango_13_17 AS Cantidad_Habitantes, 'rango_13_17' AS RangoEdad
+               FROM PoblacionEdad
+               UNION ALL
+               SELECT Departamento_id, mayores_18 AS Cantidad_Habitantes, 'mayores_18' AS RangoEdad
+               FROM PoblacionEdad
+               ORDER BY Departamento_id, RangoEdad
+               
         """
 
 Departamento_RangoEdades = dd.query(consulta).df()
-
-#veo que ushuaia, rio grande y chascomus difieren las id del censo 2022 y 
-# departamentos(tabla relacional) osea del dataset 'actividad-sexo-departamento'.
-#####################################
-# consulta = """
-#                SELECT Departamento_id, rango_0_5 AS Cantidad_Habitantes, 'rango_0_5' AS RangoEdad
-#                FROM Departamento_RangoEdades
-#                UNION ALL
-#                SELECT Departamento_id, rango_6_12 AS Cantidad_Habitantes, 'rango_6_12' AS RangoEdad
-#                FROM Departamento_RangoEdades
-#                UNION ALL
-#                SELECT Departamento_id, rango_13_17 AS Cantidad_Habitantes, 'rango_13_17' AS RangoEdad
-#                FROM Departamento_RangoEdades
-#                UNION ALL
-#                SELECT Departamento_id, mayores_18 AS Cantidad_Habitantes, 'mayores_18' AS RangoEdad
-#                FROM Departamento_RangoEdades
-#                ORDER BY Departamento_id, RangoEdad
-               
-#         """
-
-# Departamento_RangoEdades = dd.query(consulta).df()
 #============================================
 # ESTABLECIMIENTO EDUCATIVO - NIVEL EDUCATIVO        
 #============================================
@@ -232,39 +220,22 @@ consulta = """
         """
 
 ActividadProductiva_Departamento= dd.query(consulta).df()
+
 #%%
-#DEPARTAMENTO_ESTABLECIMIENTO EDUCATIVO (Departamento_id, Cue)
-		
-
-# consulta = """
-#            SELECT P.Provincia, P.Provincia_id, D.Departamento_id, D.Departamento
-#            FROM Provincia AS P
-#            INNER JOIN
-#            Departamento_Provincia AS DP
-#            ON P.Provincia_id = DP.Provincia_id
-#            INNER JOIN
-#            Departamento AS D
-#            ON D.Departamento_id = DP.Departamento_id
-#            """
-
-# test = dd.query(consulta).df()
-
 consulta = """
-                SELECT Cue, D.Departamento_id
-                FROM EstEducativos AS E
-                INNER JOIN
-                Departamento AS D
-                ON  UPPER(E.departamento) = D.Departamento
-        """
+           SELECT E.Departamento_id, E.Cue
+           FROM EstEducativos AS E
+           
+           """
 
 Departamento_EstablecimientoEducativo= dd.query(consulta).df()
 
 
 
 
-# Provincia.to_csv("Provincia.csv", index=False)
-# Departamento.to_csv("Departamento.csv", index=False)
-# EstablecimientoEducativo.to_csv("EstablecimientoEducativo.csv", index=False)
-# Provincia.to_csv("Provincia.csv", index=False)
+
+
+
+
 
 
