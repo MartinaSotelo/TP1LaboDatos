@@ -10,13 +10,28 @@ import duckdb as dd
 import matplotlib.pyplot as plt
 from matplotlib.ticker import ScalarFormatter
 
-carpeta = "/home/martina/Escritorio/tpLabo1/"
+carpeta = "C:/Users/perei/Downloads/Datos_para_el_TP/"
 
+# EstEducativos = pd.read_csv(carpeta+"PadronEstablecimientosEducativosLimpio.csv")
+EstProductivos = pd.read_csv(carpeta+"DepartamentoActivdadySexoLimpio.csv")
+# PoblacionEdad= pd.read_csv(carpeta+"PadronPoblacionLimpio.csv")
 Consulta1 = pd.read_csv(carpeta+"Consulta01.csv")
 Consulta2 = pd.read_csv(carpeta+"Consulta02.csv")
 Consulta3= pd.read_csv(carpeta+"Consulta03.csv")
 Consulta4= pd.read_csv(carpeta+"Consulta04.csv")
-
+from TablasRelacional import (Departamento,
+                              Provincia, 
+                              ActividadProductiva, 
+                              EstablecimientoEducativo, 
+                              NivelEducativo, 
+                              RangoEdades, 
+                              Departamento_RangoEdades, 
+                              Departamento_Provincia, 
+                              EstablecimientoEducativo_NivelEducativo, 
+                              RangoEdades_NivelEducativo, 
+                              ActividadProductiva_Departamento, 
+                              Departamento_EstablecimientoEducativo)
+from Consulta_1 import ProvinciaYDepartamento
 '''
 Cantidad de empleados por provincia, para 2022. Mostrarlos ordenados de
 manera decreciente por dicha cantidad 
@@ -97,3 +112,114 @@ plt.grid(True, linestyle='--', alpha=0.5)
 
 plt.tight_layout()
 plt.show()
+
+
+#%%
+
+consulta = """
+           SELECT provincia
+           FROM Provincia
+           ORDER BY provincia ASC
+           """
+a = dd.query(consulta).df()
+
+t = []
+i = 0
+while i < 24:
+    t.append(a.iloc[i,0])
+    i += 1
+print(t)
+
+r = []
+for prov in t:
+    n = Consulta3[Consulta3["provincia"] ==prov]["Cantidad de EE"]
+    r.append(n)
+plt.figure(figsize=(20,15))
+plt.boxplot(r, labels=t)
+plt.xticks(rotation = 70)
+plt.show()
+
+
+#%%
+
+consulta = """
+           SELECT Departamento_id, SUM(Empleados) AS Empleados
+           FROM ActividadProductiva_Departamento
+           GROUP BY Departamento_id
+           """
+V4_1 = dd.query(consulta).df()
+
+consulta = """
+           SELECT C.Departamento, P.Departamento_id, C.provincia, C.poblacion, C."Cantidad de EE", V.Empleados
+           FROM Consulta3 AS C
+           INNER JOIN ProvinciaYDepartamento AS P ON P.Departamento = C.Departamento AND P.provincia = C.provincia
+           INNER JOIN V4_1 AS V ON P.Departamento_id = V.Departamento_id
+           """
+V4_2 = dd.query(consulta).df()
+
+
+plt.figure(figsize=(10,6))
+plt.scatter(V4_2["Cantidad de EE"]/V4_2["Poblacion"]*1000, V4_2["Empleados"]/V4_2["Poblacion"]*1000)
+plt.xlabel("EE cada 1000 habitantes")
+plt.ylabel("Empleados cada 1000 habitantes")
+plt.title("Relación entre empleados y EE por departamento")
+    
+
+#%%
+consulta = """
+           SELECT clae6, SUM(Empleo) AS Empleados
+           FROM EstProductivos
+           GROUP BY clae6
+           """
+Emp_por_clae = dd.query(consulta).df()
+#%%
+consulta = """
+           SELECT clae6, SUM(CASE WHEN genero = 'Mujeres' THEN Empleo ELSE 0 END) AS Empleadas, SUM(Empleo) AS Empleados_totales
+           FROM ActividadProductiva_Departamento
+           GROUP BY clae6
+           """
+Empleados = dd.query(consulta).df()
+
+Empleados["Proporcion_mujeres"] = Empleados["Empleadas"].astype(float)/Empleados["Empleados_totales"].astype(float)*100
+#%%
+
+ActividadProductiva_Departamento["Proporcion_mujeres"] = ActividadProductiva_Departamento["EmpleadasMujeres"].astype(float)/ActividadProductiva_Departamento["Empleados"].astype(float)*100   
+
+consulta = """
+           SELECT *
+           FROM ActividadProductiva_Departamento
+           ORDER BY Proporcion_mujeres ASC
+           LIMIT 5
+           """
+mas_prop = dd.query(consulta).df()
+
+consulta = """
+           SELECT *
+           FROM ActividadProductiva_Departamento
+           ORDER BY Proporcion_mujeres DESC
+           LIMIT 5
+           """
+           
+menor_prop = dd.query(consulta).df()
+
+consulta = """
+           SELECT *
+           FROM mas_prop
+           UNION ALL
+           SELECT *
+           FROM menor_prop
+           """
+V5 = dd.query(consulta).df()
+
+
+#%%
+
+total_mujeres = EstProductivos.loc[(EstProductivos["genero"] == "Mujeres") & (EstProductivos["clae6"] == 960202), "Empleo"].sum() 
+total_varones = EstProductivos.loc[(EstProductivos["genero"] == "Varones") & (EstProductivos["clae6"] == 960202), "Empleo"].sum()
+total = total_mujeres + total_varones
+
+porc_mujeres = total_mujeres / total * 100
+porc_varones = total_varones / total * 100
+
+print(f"Mujeres: {total_mujeres} ({porc_mujeres:.2f}%)")
+print(f"Varones: {total_varones} ({porc_varones:.2f}%)")
