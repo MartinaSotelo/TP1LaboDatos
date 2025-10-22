@@ -14,7 +14,7 @@ import numpy as np
 # Importamos los datasets que vamos a utilizar en este programa
 #=============================================================================
 
-carpeta = ""
+carpeta = "C:/Users/perei/Downloads/Datos_para_el_TP/"
 
 padron_ee = pd.read_excel(carpeta + "2022_padron_oficial_establecimientos_educativos.xlsx", skiprows=6)
 actividades = pd.read_csv(carpeta + "actividades_establecimientos.csv")
@@ -57,27 +57,30 @@ padron_ee.replace(' ', np.nan, inplace=True)
 
 consulta = '''
               SELECT provincia, Cue,
-              REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE
+              REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE
               (departamento,'CORONEL DE MARINA L ROSALES','CORONEL DE MARINA LEONARDO ROSALES' 
               ),'1§ DE MAYO','1° DE MAYO'                                                             
               ),'MAYOR LUIS J FONTANA','MAYOR LUIS J. FONTANA'                                                      
-              ),'O HIGGINGS','OHIGGINGS'                                                       
+              ),'O HIGGINS','O''HIGGINS'                                                       
               ),'DOCTOR MANUEL BELGRANO','DR. MANUEL BELGRANO'
               ),'GENERAL OCAMPO','GENERAL ORTIZ DE OCAMPO'                                                     
               ), 'CORONEL FELIPE VARELA','GENERAL FELIPE VARELA'
-              ), 'GENERAL ANGEL V PENALOZA','ANGEL VICENTE PENALOZA'
+              ), 'GENERAL ANGEL V PEÑALOZA','ANGEL VICENTE PEÑALOZA'
               ),'GENERAL JUAN F QUIROGA','GENERAL JUAN FACUNDO QUIROGA'
               ),'LIBERTADOR GRL SAN MARTIN','LIBERTADOR GENERAL SAN MARTIN'
               ),'GENERAL JUAN MARTIN DE PUEYRREDON', 'JUAN MARTIN DE PUEYRREDON' 
               ),'JUAN B ALBERDI','JUAN BAUTISTA ALBERDI'
-              ), 'JUAN F IBARRA','JUAN FELIPE IBARRA'
+              ), 'JUAN F IBARRA','JUAN FELIPE IBARRA'                
+              ),'MALARGUE', 'MALARGÜE'
+              ),'GENERAL GUEMES', 'GENERAL GÜEMES'
+              ),'GUER AIKE', 'GÜER AIKE'
               ) AS departamento,
-              Jardin_maternal, Jardin_infantes, Primario, Secundario, SNU, Secundario_INET, SNU_INET,
+              Jardin_maternal, Jardin_infantes, Primario, Secundario, SNU, Secundario_INET, SNU_INET
               FROM padron_ee
            '''       
 
 padron_ee = dd.query(consulta).df()
-
+#%%
 consulta = """
                SELECT provincia, departamento, Cue, 
                    CASE 
@@ -97,52 +100,24 @@ consulta = """
         """
 
 padron_ee_Limpio = dd.query(consulta).df()
+#%%
 
-#%%===========================================================================
-# Hago que coincidan los nombres de departamento en dep_ac_sex y padron_ee
-#=============================================================================
-# consulta = ''' 
-#              SELECT anio, in_departamentos, departamento, provincia_id, provincia, clae6, genero, Empleo, establecimientos, empresas_exportadoras,
-#                  REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(UPPER(departamento),'Á', 'A'),'É', 'E'),'Í', 'I'),'Ó', 'O'),'Ú', 'U') AS departamento_sin_tildes
-#              FROM dep_ac_sex 
-#          '''
-#dep_ac_sex = dd.query(consulta).df()
+consulta = """
+           SELECT DISTINCT in_departamentos, departamento, provincia
+           FROM dep_ac_sex_limpio
+           """
+           
+aux = dd.query(consulta).df()
+#%%
 
-# consulta = ''' 
-#               SELECT provincia, cueanexo, Departamento, "Nivel inicial - Jardín maternal" , "Nivel inicial - Jardín de infantes", Primario, Secundario, SNU, "Secundario - INET", "SNU - INET" ,
-#               REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(UPPER(Departamento),'Á', 'A'),'É', 'E'),'Í', 'I'),'Ó', 'O'),'Ú', 'U') AS departamento_normalizado
-#               FROM padron_ee
-             
-#            '''
-# padron_ee = dd.query(consulta).df()
+consulta = """
+           SELECT P.provincia AS Provincia, P.departamento AS Departamento, D.in_departamentos AS Departamento_id, Cue, Jardin, Primario, Secundario, SNU
+           FROM padron_ee_Limpio AS P
+           JOIN aux AS D ON D.departamento = P.departamento AND D.provincia = P.provincia
+           """
+ 
+padron_ee_Limpio = dd.query(consulta).df()
 
-#%%===========================================================================
-# Selecciono las columnas que me interesan y renombro
-#=============================================================================
-# PADRON ESTABLECIMIENTOS EDUCATIVOS 
-#=============================================================================
-
-# consulta = ''' 
-#               SELECT provincia AS Provincia, cueanexo AS Cue, departamento, "Nivel inicial - Jardín maternal" AS "Jardin_Maternal", "Nivel inicial - Jardín de infantes" AS "Jardin_Infantes", Primario, Secundario, SNU, "Secundario - INET" AS Secundario_INET, "SNU - INET" AS SNU_INET 
-#               FROM padron_ee
-             
-#            '''
-# padron_ee_Limpio = dd.query(consulta).df()
-
-# # Elimino todos las filas de colegios que no sean modalidad común 
-# padron_ee_Limpio.replace(' ', np.nan, inplace=True) #reemplazo espacios en blanco por nulls
-# padron_ee_Limpio.dropna(thresh=4,inplace=True)
-
-#=============================================================================
-# DATOS DEPARTAMENTO POR ACTIVIDAD Y SEXO
-#=============================================================================
-
-# consulta = ''' 
-#              SELECT in_departamentos, departamento_normalizado, provincia_id, provincia_normalizado_cambia_CABA AS provincia, clae6, genero, Empleo, establecimientos, empresas_exportadoras,
-#              FROM dep_ac_sex
-#              WHERE anio = '2022';
-#            '''
-# dep_ac_sex_limpio = dd.query(consulta).df()
 
 #%%===========================================================================
 #                    LIMPIEZA DATASET PADRON POBLACION 
@@ -242,23 +217,9 @@ consulta = """
                  FROM padron_poblacion_rangos
                  GROUP BY id_areas
                  ORDER BY id_areas ASC
+
            """
 padron_poblacion_acomodado = dd.query(consulta).df()
-
-
-
-
-#%%
-#Hay que cambiar los nombres de los deptos por los ids de los deptos
-# consulta = ''' 
-#               SELECT provincia_normalizado AS Provincia, cueanexo AS Cue, departamento_normalizado AS departamento, "Nivel inicial - Jardín maternal" AS "Jardin_Maternal", "Nivel inicial - Jardín de infantes" AS "Jardin_Infantes", Primario, Secundario, SNU, "Secundario - INET" AS Secundario_INET, "SNU - INET" AS SNU_INET 
-#               FROM padron_ee
-             
-#            '''
-# padron_ee_Limpio = dd.query(consulta).df()
-
-
-
 
 
 #%%
