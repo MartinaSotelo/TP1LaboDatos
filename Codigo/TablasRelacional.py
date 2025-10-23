@@ -194,28 +194,13 @@ RangoEdades_NivelEducativo = pd.DataFrame(edad_nivelEducativo)
 #============================================
 
 consulta = """
-               SELECT CAST(clae6 AS VARCHAR) AS Clae6, CAST(Departamento_id AS VARCHAR) AS Departamento_id, SUM(Empleo) AS Empleados
+               SELECT CAST(clae6 AS VARCHAR) AS Clae6, CAST(Departamento_id AS VARCHAR) AS Departamento_id,
+                   SUM(Empleo) AS Empleados,
+                   SUM(CASE WHEN genero = 'Mujeres' THEN empleo ELSE 0 END) AS EmpleadasMujeres,
+                   SUM(Empresas_Exportadoras) AS Empresas_exportadoras
                FROM EstProductivos
                GROUP BY Clae6, Departamento_id
                ORDER BY Departamento_id, Clae6
-        """
-
-ActividadProductiva_Departamento = dd.query(consulta).df()
-
-consulta = """
-               SELECT A.Clae6, A.Departamento_id, A.Empleados, E.genero, E.Empleo, E.Empresas_exportadoras
-               FROM ActividadProductiva_Departamento AS A
-               JOIN EstProductivos AS E
-               ON E.clae6=A.Clae6 AND E.departamento_id=A.Departamento_id, 
-        """
-
-ActividadProductiva_Departamento = dd.query(consulta).df()
-
-consulta = """
-                SELECT Clae6, Departamento_id, Empleados, Empresas_exportadoras,
-                SUM(CASE WHEN genero = 'Mujeres' THEN empleo ELSE 0 END) AS EmpleadasMujeres
-                FROM ActividadProductiva_Departamento
-                GROUP BY clae6, Departamento_id, Empresas_Exportadoras, empleados;
         """
 
 ActividadProductiva_Departamento = dd.query(consulta).df()
@@ -226,7 +211,6 @@ ActividadProductiva_Departamento = dd.query(consulta).df()
 consulta = """
            SELECT E.Departamento_id, E.Cueanexo AS Cue
            FROM EstEducativos AS E
-           
            """
 
 Departamento_EstablecimientoEducativo = dd.query(consulta).df()
