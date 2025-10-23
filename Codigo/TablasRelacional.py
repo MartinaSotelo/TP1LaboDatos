@@ -197,7 +197,7 @@ consulta = """
                SELECT CAST(clae6 AS VARCHAR) AS Clae6, CAST(Departamento_id AS VARCHAR) AS Departamento_id,
                    SUM(Empleo) AS Empleados,
                    SUM(CASE WHEN genero = 'Mujeres' THEN empleo ELSE 0 END) AS EmpleadasMujeres,
-                   SUM(Empresas_Exportadoras) AS Empresas_exportadoras
+                   SUM(CASE WHEN genero = 'Mujeres' THEN Empresas_exportadoras ELSE 0 END) AS Empresas_exportadoras_mujeres
                FROM EstProductivos
                GROUP BY Clae6, Departamento_id
                ORDER BY Departamento_id, Clae6
