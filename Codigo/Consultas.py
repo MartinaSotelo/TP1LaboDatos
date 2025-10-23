@@ -5,7 +5,7 @@ Dulio Joaquin,
 Risuleo Franco, 
 Perez Sotelo Martina
 
-En este archivo realizamos las consultas pedidas:
+En este archivo realizamos las visualizaciones pedidas:
 
     Las tablas del modelo estan importadas desde el archivo .py
 """
@@ -243,7 +243,7 @@ femenino.'''
 #Cuento por departamento cantidad de empresas exportadoras que emplean mujeres
 
 consulta= ''' 
-            SELECT Departamento_id, COUNT(empresas_exportadoras_mujeres) AS EmpresasExportadoras_EmpleanMujeres
+            SELECT Departamento_id, SUM(empresas_exportadoras_mujeres) AS EmpresasExportadoras_EmpleanMujeres
             FROM ActividadProductiva_Departamento
             GROUP BY Departamento_id
          '''
@@ -359,16 +359,18 @@ CONSULTA2.to_csv("Consultas/Consulta2.csv", index=False)
 CONSULTA1.to_csv("Consultas/Consulta1.csv", index=False)
 
 #=============================================================================
-
+# Hago las mismas consultas pero viendo el resultado total en cada provincia
+#=============================================================================
 
 consulta= ''' 
-              SELECT Provincia, SUM(jardines) AS jardines, SUM(primarias) as primarias, AVG(secundarias) as secundarias, SUM("Superiores No Universitarios") as SNU, 
+              SELECT Provincia, SUM(jardines) AS jardines, SUM(primarias) as primarias, SUM(secundarias) as secundarias, SUM("Superiores No Universitarios") as SNU,
+              SUM("Poblacion jardines"), SUM("poblacion primarias"), SUM("Poblacion secundarias"), SUM("poblacion superiores no universitarios")
               FROM CONSULTA1 
               GROUP BY Provincia
-              ORDER BY Provincia, jardines DESC
+              ORDER BY (SUM("poblacion superiores no universitarios") + SUM("Poblacion secundarias") +SUM("poblacion primarias")+ SUM("Poblacion jardines")) DESC
           '''
-SumaConsulta1=dd.query(consulta).df()
-SumaConsulta1.to_csv("Consultas/SumaConsulta1.csv", index=False)
+Provincia_Consulta1=dd.query(consulta).df()
+Provincia_Consulta1.to_csv("Consultas/Provincia_Consulta1.csv", index=False)
 
 
 consulta= ''' 
@@ -377,8 +379,8 @@ consulta= '''
               GROUP BY provincia
               ORDER BY EmpleadosTotales DESC
           '''
-SumaConsulta2=dd.query(consulta).df()
-SumaConsulta2.to_csv("Consultas/SumaConsulta2.csv", index=False)
+Provincia_Consulta2=dd.query(consulta).df()
+Provincia_Consulta2.to_csv("Consultas/Provincia_Consulta2.csv", index=False)
 
 consulta= ''' 
               SELECT Provincia, SUM(poblacion) , SUM("Cantidad de EE"), SUM(EmpresasExportadoras_EmpleanMujeres)
@@ -386,15 +388,15 @@ consulta= '''
               GROUP BY Provincia, poblacion, "Cantidad de EE" , EmpresasExportadoras_EmpleanMujeres 
               ORDER BY Poblacion DESC, "Cantidad de EE" DESC, EmpresasExportadoras_EmpleanMujeres DESC
           '''
-SumaConsulta3=dd.query(consulta).df()
-SumaConsulta3.to_csv("Consultas/SumaConsulta3.csv", index=False)
+Provincia_Consulta3=dd.query(consulta).df()
+Provincia_Consulta3.to_csv("Consultas/Provincia_Consulta3.csv", index=False)
+
 
 consulta= ''' 
-              SELECT Departamento, Provincia,
-              FROM CONSULTA3
-              GROUP BY Provincia, poblacion, "Cantidad de EE" , EmpresasExportadoras_EmpleanMujeres 
-              ORDER BY Poblacion DESC, "Cantidad de EE" DESC, EmpresasExportadoras_EmpleanMujeres DESC
+              SELECT Provincia, clae3, SUM(empleados)
+              FROM CONSULTA4
+              GROUP BY Provincia, clae3 
+              ORDER BY Provincia, SUM(empleados) DESC
           '''
-SumaConsulta3=dd.query(consulta).df()
-SumaConsulta3.to_csv("Consultas/SumaConsulta3.csv", index=False)
-
+Provincia_Consulta4=dd.query(consulta).df()
+Provincia_Consulta4.to_csv("Consultas/Provincia_Consulta4.csv", index=False)
