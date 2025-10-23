@@ -360,13 +360,41 @@ CONSULTA1.to_csv("Consultas/Consulta1.csv", index=False)
 
 #=============================================================================
 
-consulta= ''' 
-              SELECT Provincia, AVG(jardines), AVG(primarias), AVG(secundarias), AVG("Superiores No Universitarios"), 
-              FROM CONSULTA 1 
-              INNER JOIN
-              ProvinciaYDepartamento AS PYD
-              ON P.Departamento_id=PYD.Departamento_id
-          '''
 
-CONSULTA4=dd.query(consulta).df()
+consulta= ''' 
+              SELECT Provincia, SUM(jardines) AS jardines, SUM(primarias) as primarias, AVG(secundarias) as secundarias, SUM("Superiores No Universitarios") as SNU, 
+              FROM CONSULTA1 
+              GROUP BY Provincia
+              ORDER BY Provincia, jardines DESC
+          '''
+SumaConsulta1=dd.query(consulta).df()
+SumaConsulta1.to_csv("Consultas/SumaConsulta1.csv", index=False)
+
+
+consulta= ''' 
+              SELECT provincia, SUM(EmpleadosTotales) AS EmpleadosTotales,
+              FROM CONSULTA2 
+              GROUP BY provincia
+              ORDER BY EmpleadosTotales DESC
+          '''
+SumaConsulta2=dd.query(consulta).df()
+SumaConsulta2.to_csv("Consultas/SumaConsulta2.csv", index=False)
+
+consulta= ''' 
+              SELECT Provincia, SUM(poblacion) , SUM("Cantidad de EE"), SUM(EmpresasExportadoras_EmpleanMujeres)
+              FROM CONSULTA3
+              GROUP BY Provincia, poblacion, "Cantidad de EE" , EmpresasExportadoras_EmpleanMujeres 
+              ORDER BY Poblacion DESC, "Cantidad de EE" DESC, EmpresasExportadoras_EmpleanMujeres DESC
+          '''
+SumaConsulta3=dd.query(consulta).df()
+SumaConsulta3.to_csv("Consultas/SumaConsulta3.csv", index=False)
+
+consulta= ''' 
+              SELECT Departamento, Provincia,
+              FROM CONSULTA3
+              GROUP BY Provincia, poblacion, "Cantidad de EE" , EmpresasExportadoras_EmpleanMujeres 
+              ORDER BY Poblacion DESC, "Cantidad de EE" DESC, EmpresasExportadoras_EmpleanMujeres DESC
+          '''
+SumaConsulta3=dd.query(consulta).df()
+SumaConsulta3.to_csv("Consultas/SumaConsulta3.csv", index=False)
 
