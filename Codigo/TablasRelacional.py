@@ -5,17 +5,18 @@ Created on Sat Oct 18 16:21:05 2025
 
 @author: martina
 """
-import pandas as pd
-import duckdb as dd
-import re
-import numpy as np
+#============================================
 
-#%%
-carpeta = "C:/Users/perei/Downloads/Datos_para_el_TP/"
-EstEducativos = pd.read_csv(carpeta+"PadronEstablecimientosEducativosLimpio.csv")
-EstProductivos = pd.read_csv(carpeta+"DepartamentoActivdadySexoLimpio.csv")
-PoblacionEdad= pd.read_csv(carpeta+"PadronPoblacionLimpio.csv")
+"""
+Grupo Import_milanesas
+Integrantes: 
+Dulio Joaquin, 
+Risuleo Franco, 
+Perez Sotelo Martina
 
+En este archivo armamos todas las tablas del modelo relacional
+a partir de la limpieza que le hicimos a las tablas originales en LimpiezaDatasets
+"""
 #============================================
 #Importamos librerias
 #============================================
@@ -23,13 +24,17 @@ import pandas as pd
 import duckdb as dd
 import re
 import numpy as np
-
+import os
 #============================================
 #Importamos las tablas limpias y normalizadas
 #============================================
-from LimpiezaDatasets import (padron_poblacion_acomodado as PoblacionEdad,
-                             dep_ac_sex_limpio as EstProductivos,
-                             Padron_ee_limpioasas as EstEducativos)
+carpeta = "~/import_milanesas/TablasLimpias/"
+EstEducativos = pd.read_csv(carpeta+"PadronEstablecimientosEducativosLimpio.csv")
+EstProductivos = pd.read_csv(carpeta+"DepartamentoActivdadySexoLimpio.csv")
+PoblacionEdad= pd.read_csv(carpeta+"PadronPoblacionLimpio.csv")
+
+#%%
+# casteo todo los ids como varchar por las dudas. 
 
 #============================================
 #         TABLAS DE LAS RELACIONES
@@ -122,6 +127,9 @@ consulta = """
 Departamento_Provincia = dd.query(consulta).df()
 
 
+#============================================
+#    DEPARTAMENTO - RANGO EDADES        
+#============================================
 consulta = """
                SELECT Departamento_id, rango_0_5 AS Cantidad_Habitantes, 'rango_0_5' AS RangoEdad
                FROM PoblacionEdad
@@ -211,9 +219,40 @@ ActividadProductiva_Departamento = dd.query(consulta).df()
 consulta = """
            SELECT E.Departamento_id, E.Cueanexo AS Cue
            FROM EstEducativos AS E
+           
            """
 
 Departamento_EstablecimientoEducativo = dd.query(consulta).df()
+
+# %%
+
+
+#=============================================================================
+#Exporto todas las tablas a csv
+#=============================================================================
+#Creo la carpeta TablasModelo si no existe
+os.makedirs("TablasModelo", exist_ok=True)
+
+#exporto los csv:   
+
+Departamento_EstablecimientoEducativo.to_csv("TablasModelo/Departamento_EstablecimientoEducativo.csv", index=False)
+ActividadProductiva_Departamento.to_csv("TablasModelo/ActividadProductiva_Departamento.csv",index=False)
+RangoEdades_NivelEducativo.to_csv("TablasModelo/RangoEdades_NivelEducativo.csv",index=False)
+EstablecimientoEducativo_NivelEducativo.to_csv("TablasModelo/EstablecimientoEducativo_NivelEducativo.csv",index=False)
+Departamento_RangoEdades.to_csv("TablasModelo/Departamento_RangoEdades.csv",index=False)
+Departamento_Provincia.to_csv("TablasModelo/Departamento_Provincia.csv",index=False)
+RangoEdades.to_csv("TablasModelo/RangoEdades.csv",index=False)
+ActividadProductiva.to_csv("TablasModelo/ActividadProductiva.csv",index=False)
+NivelEducativo.to_csv("TablasModelo/NivelEducativo.csv",index=False)
+EstablecimientoEducativo.to_csv("TablasModelo/EstablecimientoEducativo.csv",index=False)
+Departamento.to_csv("TablasModelo/Departamento.csv",index=False)
+Provincia.to_csv("TablasModelo/Provincia.csv",index=False)
+
+
+
+
+
+
 
 
 
