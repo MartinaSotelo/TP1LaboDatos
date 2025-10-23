@@ -1,0 +1,528 @@
+provincia,sum(poblacion),"sum(""Cantidad de EE"")",sum(EmpresasExportadoras_EmpleanMujeres)
+Buenos Aires,1837168.0,1186.0,666.0
+Córdoba,1498060.0,1400.0,740.0
+Santa Fe,1337958.0,1248.0,778.0
+Buenos Aires,756074.0,832.0,621.0
+Buenos Aires,685644.0,647.0,552.0
+Buenos Aires,660569.0,664.0,688.0
+Buenos Aires,631774.0,542.0,586.0
+Salta,624003.0,388.0,574.0
+Tucumán,587289.0,586.0,593.0
+Buenos Aires,583209.0,489.0,487.0
+Buenos Aires,581484.0,426.0,407.0
+Buenos Aires,575758.0,428.0,471.0
+Santa Fe,568259.0,728.0,585.0
+Buenos Aires,488103.0,343.0,374.0
+Neuquén,467217.0,452.0,566.0
+Buenos Aires,460081.0,428.0,570.0
+Buenos Aires,446291.0,394.0,585.0
+Buenos Aires,444503.0,364.0,600.0
+Corrientes,437446.0,384.0,487.0
+Chaco,413764.0,810.0,535.0
+Buenos Aires,393614.0,339.0,564.0
+Misiones,391498.0,445.0,506.0
+Entre Ríos,388716.0,591.0,553.0
+Río Negro,379627.0,548.0,534.0
+Buenos Aires,366117.0,367.0,589.0
+Buenos Aires,362319.0,316.0,577.0
+Buenos Aires,358328.0,335.0,433.0
+Buenos Aires,349401.0,255.0,464.0
+Buenos Aires,337880.0,247.0,448.0
+Buenos Aires,334505.0,360.0,593.0
+Buenos Aires,329517.0,357.0,553.0
+Santiago del Estero,328824.0,351.0,455.0
+Buenos Aires,327650.0,302.0,425.0
+Buenos Aires,326527.0,198.0,302.0
+Mendoza,320871.0,304.0,534.0
+Jujuy,319469.0,316.0,418.0
+Buenos Aires,295978.0,327.0,650.0
+Córdoba,294511.0,306.0,498.0
+Buenos Aires,280541.0,284.0,644.0
+Córdoba,277979.0,401.0,540.0
+Formosa,268572.0,344.0,354.0
+Ciudad Autónoma de Buenos Aires,262330.0,190.0,670.0
+San Luis,260769.0,216.0,461.0
+Buenos Aires,256071.0,249.0,454.0
+Ciudad Autónoma de Buenos Aires,247252.0,173.0,660.0
+Ciudad Autónoma de Buenos Aires,235364.0,171.0,580.0
+Mendoza,233839.0,222.0,325.0
+Córdoba,228951.0,434.0,497.0
+Tucumán,227688.0,225.0,255.0
+Ciudad Autónoma de Buenos Aires,227024.0,275.0,642.0
+Ciudad Autónoma de Buenos Aires,221001.0,278.0,846.0
+Córdoba,219494.0,245.0,446.0
+Mendoza,218887.0,215.0,430.0
+Chubut,214829.0,215.0,454.0
+Ciudad Autónoma de Buenos Aires,213262.0,180.0,521.0
+Mendoza,213204.0,345.0,457.0
+La Rioja,210507.0,234.0,378.0
+Ciudad Autónoma de Buenos Aires,203888.0,219.0,402.0
+Ciudad Autónoma de Buenos Aires,201905.0,172.0,551.0
+Ciudad Autónoma de Buenos Aires,201764.0,141.0,521.0
+Santa Fe,200455.0,342.0,482.0
+Buenos Aires,198620.0,171.0,375.0
+Entre Ríos,197603.0,217.0,397.0
+Santa Fe,197533.0,377.0,402.0
+Ciudad Autónoma de Buenos Aires,195265.0,163.0,604.0
+Mendoza,194557.0,232.0,458.0
+Santa Fe,193786.0,206.0,453.0
+Ciudad Autónoma de Buenos Aires,193537.0,214.0,598.0
+Ciudad Autónoma de Buenos Aires,192449.0,156.0,532.0
+Santa Fe,189464.0,311.0,469.0
+Catamarca,186466.0,174.0,410.0
+Buenos Aires,185361.0,174.0,366.0
+Buenos Aires,177983.0,164.0,396.0
+Salta,177448.0,184.0,264.0
+Tucumán,172877.0,134.0,217.0
+Ciudad Autónoma de Buenos Aires,171896.0,168.0,522.0
+Mendoza,171883.0,167.0,408.0
+Buenos Aires,171099.0,193.0,453.0
+Santiago del Estero,170401.0,262.0,270.0
+Ciudad Autónoma de Buenos Aires,167908.0,163.0,548.0
+Buenos Aires,166657.0,212.0,397.0
+Río Negro,161443.0,230.0,443.0
+Ciudad Autónoma de Buenos Aires,160609.0,113.0,601.0
+Salta,159715.0,135.0,244.0
+Córdoba,152397.0,205.0,476.0
+San Luis,148671.0,128.0,393.0
+Buenos Aires,144678.0,209.0,472.0
+Chubut,144420.0,203.0,398.0
+Buenos Aires,142315.0,124.0,321.0
+Mendoza,139406.0,194.0,346.0
+Córdoba,139012.0,191.0,380.0
+Santa Cruz,137309.0,153.0,346.0
+San Juan,136582.0,141.0,269.0
+Buenos Aires,131415.0,159.0,363.0
+Santa Cruz,126266.0,142.0,303.0
+Entre Ríos,125176.0,251.0,404.0
+Mendoza,123715.0,277.0,559.0
+Jujuy,122259.0,101.0,204.0
+Buenos Aires,122011.0,221.0,380.0
+Misiones,120703.0,297.0,293.0
+Córdoba,120207.0,191.0,394.0
+La Pampa,118504.0,198.0,388.0
+Entre Ríos,115516.0,204.0,338.0
+Buenos Aires,114988.0,184.0,420.0
+San Juan,114849.0,241.0,508.0
+Santa Fe,114730.0,241.0,381.0
+Córdoba,113635.0,245.0,341.0
+Córdoba,113311.0,192.0,334.0
+Buenos Aires,110111.0,165.0,399.0
+Buenos Aires,107976.0,161.0,349.0
+Córdoba,107286.0,207.0,368.0
+Corrientes,106223.0,188.0,240.0
+San Juan,103772.0,103.0,185.0
+Chubut,102806.0,97.0,372.0
+Tucumán,102589.0,91.0,325.0
+Buenos Aires,101994.0,70.0,148.0
+Buenos Aires,101483.0,161.0,357.0
+San Juan,101334.0,109.0,196.0
+Chaco,101086.0,215.0,293.0
+Buenos Aires,100964.0,159.0,400.0
+Buenos Aires,100685.0,105.0,247.0
+Buenos Aires,100400.0,93.0,265.0
+Misiones,99838.0,174.0,216.0
+"Tierra del Fuego, Antártida e Islas del Atlántico Sur",98922.0,113.0,337.0
+Buenos Aires,97929.0,92.0,218.0
+Jujuy,94132.0,92.0,172.0
+Formosa,94116.0,213.0,156.0
+Tucumán,93464.0,86.0,160.0
+Santa Fe,93000.0,140.0,317.0
+Tucumán,92308.0,100.0,202.0
+Misiones,91133.0,162.0,219.0
+Jujuy,88237.0,114.0,173.0
+Santa Fe,86261.0,134.0,333.0
+Santa Fe,84617.0,176.0,285.0
+Formosa,81600.0,376.0,109.0
+"Tierra del Fuego, Antártida e Islas del Atlántico Sur",80009.0,105.0,323.0
+Entre Ríos,78264.0,145.0,243.0
+Tucumán,77469.0,85.0,160.0
+Misiones,77075.0,250.0,156.0
+Córdoba,75462.0,152.0,237.0
+Entre Ríos,75271.0,196.0,215.0
+Buenos Aires,75152.0,151.0,305.0
+Entre Ríos,74890.0,129.0,280.0
+Santa Fe,73636.0,138.0,326.0
+San Juan,72879.0,83.0,177.0
+Santa Fe,72593.0,210.0,228.0
+Formosa,72560.0,267.0,116.0
+Corrientes,71922.0,103.0,219.0
+Buenos Aires,71002.0,132.0,300.0
+Buenos Aires,70554.0,127.0,318.0
+Buenos Aires,70542.0,108.0,305.0
+Salta,69442.0,102.0,161.0
+La Pampa,69067.0,96.0,338.0
+Chaco,68429.0,425.0,123.0
+Buenos Aires,68353.0,124.0,287.0
+Córdoba,68317.0,133.0,269.0
+Santa Fe,67299.0,128.0,282.0
+Santiago del Estero,66637.0,142.0,132.0
+Tucumán,66352.0,134.0,73.0
+Buenos Aires,65823.0,93.0,210.0
+Jujuy,65522.0,53.0,153.0
+Chaco,65304.0,224.0,94.0
+Tucumán,64927.0,74.0,114.0
+Buenos Aires,64761.0,83.0,206.0
+Córdoba,64748.0,163.0,161.0
+Buenos Aires,63978.0,73.0,215.0
+Río Negro,63845.0,134.0,284.0
+Mendoza,63589.0,97.0,200.0
+Misiones,63194.0,199.0,141.0
+Córdoba,62700.0,129.0,232.0
+San Juan,62697.0,58.0,217.0
+Buenos Aires,61889.0,118.0,306.0
+Mendoza,59972.0,100.0,215.0
+Misiones,59875.0,213.0,188.0
+Chaco,59798.0,140.0,172.0
+La Rioja,58681.0,82.0,184.0
+Córdoba,58181.0,161.0,237.0
+Entre Ríos,56796.0,127.0,236.0
+Corrientes,56778.0,72.0,203.0
+Salta,55746.0,53.0,144.0
+Salta,55713.0,36.0,101.0
+Santa Fe,55463.0,189.0,155.0
+Entre Ríos,55284.0,173.0,207.0
+Santiago del Estero,53879.0,97.0,116.0
+Buenos Aires,52409.0,105.0,272.0
+Mendoza,52379.0,128.0,228.0
+Buenos Aires,52366.0,112.0,265.0
+Entre Ríos,52312.0,142.0,206.0
+Misiones,52166.0,132.0,162.0
+Corrientes,51489.0,97.0,162.0
+Salta,50961.0,54.0,109.0
+Misiones,50503.0,100.0,159.0
+Chubut,49965.0,101.0,236.0
+Corrientes,49807.0,83.0,152.0
+Misiones,49391.0,145.0,169.0
+Buenos Aires,49128.0,130.0,279.0
+Santa Fe,48544.0,74.0,228.0
+Buenos Aires,48516.0,103.0,272.0
+Salta,48028.0,58.0,163.0
+Mendoza,47086.0,142.0,81.0
+Santa Fe,46486.0,116.0,198.0
+Mendoza,46472.0,84.0,132.0
+Santiago del Estero,46304.0,87.0,104.0
+Buenos Aires,46227.0,71.0,254.0
+Corrientes,45602.0,79.0,157.0
+Neuquén,45540.0,65.0,187.0
+Tucumán,45459.0,103.0,62.0
+Misiones,45456.0,193.0,86.0
+Buenos Aires,45307.0,81.0,222.0
+Buenos Aires,45191.0,113.0,247.0
+Buenos Aires,44594.0,108.0,231.0
+Corrientes,44369.0,82.0,139.0
+San Juan,44017.0,80.0,126.0
+Santiago del Estero,43692.0,101.0,128.0
+Entre Ríos,42954.0,166.0,172.0
+Tucumán,42669.0,52.0,105.0
+Buenos Aires,42191.0,95.0,238.0
+Córdoba,42029.0,119.0,144.0
+Buenos Aires,41713.0,104.0,259.0
+Buenos Aires,41418.0,93.0,241.0
+Mendoza,41168.0,63.0,144.0
+Río Negro,41160.0,86.0,188.0
+Corrientes,40406.0,92.0,70.0
+Santiago del Estero,40352.0,117.0,103.0
+Entre Ríos,40301.0,123.0,202.0
+San Luis,40289.0,64.0,183.0
+Buenos Aires,40036.0,62.0,207.0
+Mendoza,39752.0,109.0,129.0
+Buenos Aires,39648.0,67.0,227.0
+Neuquén,39567.0,53.0,259.0
+Buenos Aires,39257.0,66.0,221.0
+Buenos Aires,39224.0,42.0,246.0
+Buenos Aires,39223.0,94.0,225.0
+Corrientes,39168.0,107.0,101.0
+Corrientes,38767.0,77.0,148.0
+Misiones,38620.0,83.0,131.0
+Salta,38062.0,131.0,43.0
+Chaco,37794.0,122.0,91.0
+Córdoba,37551.0,83.0,206.0
+Buenos Aires,37499.0,97.0,177.0
+Buenos Aires,37325.0,45.0,216.0
+Buenos Aires,37194.0,108.0,215.0
+Tucumán,36946.0,82.0,58.0
+Córdoba,36064.0,91.0,154.0
+Córdoba,36023.0,81.0,125.0
+Santiago del Estero,35653.0,112.0,71.0
+Río Negro,35473.0,56.0,193.0
+Buenos Aires,35423.0,87.0,221.0
+Buenos Aires,35411.0,118.0,181.0
+Buenos Aires,35055.0,90.0,219.0
+Misiones,34945.0,71.0,73.0
+Tucumán,34745.0,42.0,108.0
+Misiones,34690.0,133.0,25.0
+Chaco,34493.0,86.0,188.0
+Catamarca,33951.0,44.0,78.0
+Salta,33750.0,50.0,132.0
+Santa Fe,33180.0,88.0,121.0
+Buenos Aires,32973.0,71.0,154.0
+Chaco,32606.0,79.0,83.0
+Mendoza,32596.0,78.0,170.0
+Buenos Aires,32552.0,90.0,170.0
+Chaco,32430.0,100.0,96.0
+Buenos Aires,32350.0,73.0,190.0
+Buenos Aires,32077.0,61.0,192.0
+Buenos Aires,31405.0,56.0,153.0
+San Juan,31281.0,43.0,88.0
+Entre Ríos,31091.0,96.0,126.0
+Santa Fe,30942.0,125.0,142.0
+Misiones,30877.0,138.0,73.0
+Catamarca,30353.0,133.0,97.0
+Chaco,30223.0,81.0,107.0
+Neuquén,29721.0,39.0,148.0
+Entre Ríos,29436.0,118.0,139.0
+Corrientes,29126.0,71.0,81.0
+Chubut,28099.0,78.0,113.0
+Chaco,28060.0,108.0,50.0
+Buenos Aires,27406.0,53.0,181.0
+San Juan,27188.0,70.0,92.0
+Buenos Aires,27136.0,74.0,148.0
+Catamarca,26822.0,94.0,98.0
+Buenos Aires,26695.0,67.0,187.0
+San Luis,26522.0,49.0,127.0
+Buenos Aires,26399.0,83.0,187.0
+Chaco,26354.0,97.0,72.0
+Catamarca,26341.0,101.0,72.0
+Corrientes,26270.0,76.0,57.0
+Santiago del Estero,26193.0,114.0,42.0
+Jujuy,25831.0,61.0,75.0
+Buenos Aires,25619.0,64.0,178.0
+Santiago del Estero,25462.0,85.0,42.0
+Santa Cruz,25384.0,31.0,175.0
+San Juan,25269.0,90.0,99.0
+Catamarca,25254.0,93.0,81.0
+Santa Fe,24853.0,53.0,132.0
+Salta,24715.0,31.0,77.0
+Buenos Aires,24616.0,52.0,188.0
+Buenos Aires,24110.0,64.0,182.0
+Santiago del Estero,24047.0,94.0,60.0
+San Luis,23653.0,79.0,74.0
+Tucumán,23438.0,65.0,71.0
+Chaco,23179.0,71.0,65.0
+Misiones,23080.0,71.0,66.0
+Buenos Aires,22905.0,71.0,177.0
+Corrientes,22682.0,54.0,64.0
+Buenos Aires,22653.0,72.0,136.0
+Buenos Aires,22566.0,69.0,152.0
+Buenos Aires,22530.0,50.0,122.0
+Córdoba,22473.0,63.0,136.0
+Tucumán,22382.0,54.0,65.0
+Chaco,21948.0,67.0,125.0
+Buenos Aires,21757.0,79.0,151.0
+Chaco,21544.0,84.0,52.0
+Buenos Aires,21407.0,59.0,193.0
+Corrientes,21381.0,64.0,45.0
+Tucumán,21196.0,40.0,57.0
+Buenos Aires,21185.0,49.0,150.0
+Jujuy,20877.0,68.0,49.0
+Neuquén,20853.0,44.0,126.0
+San Juan,20824.0,65.0,56.0
+Entre Ríos,20786.0,45.0,126.0
+Buenos Aires,20674.0,45.0,154.0
+Santiago del Estero,20567.0,76.0,33.0
+Jujuy,20497.0,32.0,36.0
+Santiago del Estero,20246.0,109.0,20.0
+Santiago del Estero,20104.0,84.0,44.0
+Buenos Aires,19888.0,67.0,132.0
+Buenos Aires,19735.0,55.0,133.0
+Corrientes,19679.0,54.0,103.0
+Catamarca,19545.0,59.0,98.0
+Catamarca,19471.0,74.0,39.0
+Mendoza,19379.0,81.0,80.0
+Formosa,19275.0,80.0,40.0
+Formosa,19089.0,95.0,25.0
+Chaco,18696.0,71.0,34.0
+Santiago del Estero,18622.0,81.0,27.0
+Buenos Aires,18328.0,56.0,134.0
+Neuquén,18289.0,37.0,107.0
+Neuquén,18150.0,26.0,109.0
+Buenos Aires,18106.0,73.0,135.0
+Buenos Aires,17980.0,44.0,117.0
+Corrientes,17948.0,60.0,50.0
+La Pampa,17927.0,21.0,105.0
+Salta,17822.0,23.0,95.0
+La Pampa,17686.0,42.0,121.0
+Formosa,17678.0,137.0,1.0
+La Pampa,17356.0,46.0,141.0
+Buenos Aires,17345.0,54.0,156.0
+Buenos Aires,17344.0,63.0,129.0
+Buenos Aires,17153.0,48.0,145.0
+Formosa,17017.0,63.0,34.0
+Corrientes,17016.0,74.0,51.0
+Entre Ríos,16717.0,63.0,67.0
+Río Negro,16555.0,60.0,74.0
+Río Negro,16493.0,28.0,119.0
+Buenos Aires,16491.0,58.0,124.0
+Buenos Aires,16391.0,58.0,134.0
+La Rioja,16251.0,38.0,83.0
+Buenos Aires,16231.0,44.0,115.0
+Chaco,16045.0,58.0,35.0
+San Luis,16044.0,48.0,107.0
+Buenos Aires,15882.0,37.0,127.0
+Buenos Aires,15795.0,57.0,126.0
+La Rioja,15764.0,69.0,43.0
+La Rioja,15630.0,54.0,73.0
+Formosa,15600.0,140.0,28.0
+Tucumán,15539.0,63.0,22.0
+Neuquén,15502.0,26.0,166.0
+Córdoba,15275.0,70.0,61.0
+Corrientes,15164.0,53.0,53.0
+La Pampa,15094.0,36.0,126.0
+Chaco,15061.0,64.0,13.0
+San Juan,15037.0,39.0,34.0
+Santa Cruz,15035.0,21.0,84.0
+Santiago del Estero,15008.0,65.0,46.0
+Jujuy,14998.0,52.0,61.0
+Santiago del Estero,14894.0,42.0,6.0
+Catamarca,14624.0,32.0,60.0
+Jujuy,14621.0,34.0,43.0
+Buenos Aires,14591.0,53.0,142.0
+Chubut,14477.0,26.0,95.0
+San Luis,14334.0,32.0,71.0
+Chaco,14265.0,42.0,49.0
+Buenos Aires,14141.0,53.0,98.0
+Córdoba,14092.0,72.0,55.0
+Buenos Aires,14007.0,56.0,85.0
+Entre Ríos,13984.0,68.0,74.0
+Chaco,13938.0,38.0,82.0
+Buenos Aires,13901.0,57.0,144.0
+Chaco,13775.0,43.0,74.0
+Catamarca,13317.0,47.0,50.0
+Buenos Aires,12906.0,38.0,110.0
+Buenos Aires,12847.0,48.0,113.0
+Buenos Aires,12842.0,39.0,86.0
+Santa Cruz,12828.0,13.0,106.0
+Chaco,12807.0,29.0,50.0
+Santiago del Estero,12775.0,64.0,19.0
+Corrientes,12700.0,39.0,31.0
+Santa Cruz,12584.0,18.0,115.0
+Chubut,12505.0,34.0,110.0
+San Juan,12498.0,19.0,31.0
+Santiago del Estero,12336.0,60.0,44.0
+La Pampa,12277.0,32.0,111.0
+Salta,12246.0,20.0,24.0
+Catamarca,12219.0,48.0,41.0
+Buenos Aires,12161.0,35.0,73.0
+Mendoza,12018.0,33.0,32.0
+Corrientes,11946.0,28.0,32.0
+Buenos Aires,11736.0,41.0,92.0
+Buenos Aires,11662.0,57.0,109.0
+La Pampa,11636.0,26.0,87.0
+Corrientes,11541.0,32.0,27.0
+Buenos Aires,11535.0,44.0,87.0
+Buenos Aires,11496.0,41.0,87.0
+La Rioja,11371.0,42.0,43.0
+Buenos Aires,11253.0,36.0,83.0
+Santiago del Estero,11183.0,58.0,11.0
+La Pampa,11090.0,39.0,77.0
+La Pampa,11053.0,30.0,106.0
+Santiago del Estero,10809.0,24.0,99.0
+Buenos Aires,10759.0,31.0,93.0
+Buenos Aires,10695.0,49.0,78.0
+San Juan,10667.0,47.0,76.0
+Chaco,10643.0,47.0,27.0
+Buenos Aires,10581.0,28.0,90.0
+Corrientes,10382.0,42.0,50.0
+Misiones,10303.0,37.0,33.0
+Neuquén,10173.0,37.0,63.0
+San Juan,10172.0,41.0,28.0
+Buenos Aires,10150.0,56.0,82.0
+Santiago del Estero,9766.0,34.0,24.0
+Buenos Aires,9551.0,32.0,80.0
+Salta,9411.0,54.0,4.0
+La Pampa,9397.0,24.0,83.0
+Buenos Aires,9344.0,22.0,89.0
+Río Negro,9309.0,36.0,68.0
+Neuquén,9267.0,38.0,23.0
+Santiago del Estero,9251.0,42.0,15.0
+La Pampa,9243.0,28.0,65.0
+Buenos Aires,9090.0,26.0,76.0
+Corrientes,9051.0,25.0,47.0
+Santiago del Estero,8959.0,25.0,31.0
+Salta,8928.0,26.0,32.0
+Buenos Aires,8918.0,26.0,68.0
+Salta,8888.0,19.0,24.0
+San Juan,8826.0,38.0,88.0
+Neuquén,8471.0,24.0,43.0
+Buenos Aires,8444.0,20.0,95.0
+San Juan,8425.0,57.0,33.0
+La Pampa,8404.0,24.0,84.0
+Chaco,8310.0,33.0,55.0
+La Pampa,8225.0,19.0,78.0
+Salta,7779.0,30.0,11.0
+La Pampa,7713.0,17.0,74.0
+Neuquén,7696.0,20.0,49.0
+La Rioja,7615.0,45.0,28.0
+Río Negro,7398.0,23.0,70.0
+La Rioja,7347.0,47.0,11.0
+Salta,7182.0,18.0,41.0
+Salta,7182.0,13.0,20.0
+Buenos Aires,7112.0,22.0,72.0
+La Rioja,6984.0,40.0,16.0
+Río Negro,6960.0,32.0,17.0
+Jujuy,6729.0,9.0,14.0
+San Juan,6674.0,13.0,8.0
+San Juan,6454.0,13.0,5.0
+Chubut,6347.0,26.0,45.0
+Santa Cruz,6271.0,11.0,64.0
+Buenos Aires,6170.0,27.0,85.0
+Salta,6116.0,36.0,2.0
+"Tierra del Fuego, Antártida e Islas del Atlántico Sur",6027.0,1.0,42.0
+Chubut,5947.0,16.0,42.0
+La Rioja,5810.0,20.0,17.0
+Salta,5808.0,24.0,24.0
+La Pampa,5637.0,17.0,47.0
+San Luis,5575.0,47.0,18.0
+Neuquén,5572.0,26.0,13.0
+Santiago del Estero,5314.0,26.0,48.0
+Jujuy,5298.0,24.0,36.0
+Catamarca,5087.0,35.0,20.0
+Neuquén,5087.0,14.0,28.0
+Córdoba,5070.0,43.0,15.0
+Santiago del Estero,5034.0,27.0,18.0
+La Rioja,5017.0,50.0,15.0
+Córdoba,4855.0,45.0,42.0
+Buenos Aires,4846.0,28.0,57.0
+Neuquén,4832.0,13.0,44.0
+Catamarca,4696.0,35.0,18.0
+San Luis,4691.0,58.0,16.0
+Buenos Aires,4615.0,32.0,23.0
+Córdoba,4381.0,25.0,22.0
+Catamarca,4375.0,57.0,14.0
+La Rioja,4306.0,21.0,10.0
+Río Negro,4300.0,24.0,29.0
+Chaco,4051.0,23.0,18.0
+La Rioja,4013.0,42.0,1.0
+Jujuy,3966.0,19.0,26.0
+Río Negro,3682.0,27.0,13.0
+Salta,3491.0,15.0,16.0
+Catamarca,3282.0,44.0,3.0
+La Rioja,3184.0,29.0,1.0
+Buenos Aires,3157.0,22.0,23.0
+La Rioja,2994.0,3.0,8.0
+La Pampa,2868.0,8.0,15.0
+Chubut,2862.0,12.0,15.0
+Corrientes,2808.0,10.0,15.0
+La Rioja,2695.0,12.0,13.0
+Jujuy,2641.0,25.0,7.0
+Neuquén,2641.0,17.0,8.0
+La Pampa,2611.0,8.0,21.0
+Buenos Aires,2528.0,13.0,17.0
+Jujuy,2490.0,14.0,8.0
+La Rioja,2399.0,15.0,6.0
+La Rioja,1885.0,9.0,5.0
+Chubut,1882.0,8.0,16.0
+Catamarca,1822.0,12.0,17.0
+Jujuy,1797.0,20.0,20.0
+Salta,1789.0,12.0,7.0
+Chubut,1782.0,4.0,9.0
+Chubut,1608.0,8.0,8.0
+La Pampa,1461.0,10.0,6.0
+Río Negro,1452.0,22.0,7.0
+Santiago del Estero,1440.0,14.0,5.0
+Chubut,1181.0,10.0,8.0
+La Pampa,1103.0,8.0,11.0
+Chubut,744.0,3.0,9.0
+La Pampa,428.0,4.0,4.0
+La Pampa,413.0,5.0,20.0
