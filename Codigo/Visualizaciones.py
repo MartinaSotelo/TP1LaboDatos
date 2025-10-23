@@ -165,29 +165,30 @@ plt.ylabel("Empleados cada 1000 habitantes")
 plt.title("Relación entre empleados y EE por departamento")
     
 
+
 #%%
+
 consulta = """
-           SELECT clae6, SUM(Empleo) AS Empleados
-           FROM EstProductivos
-           GROUP BY clae6
-           """
-Emp_por_clae = dd.query(consulta).df()
-#%%
-consulta = """
-           SELECT clae6, SUM(CASE WHEN genero = 'Mujeres' THEN Empleo ELSE 0 END) AS Empleadas, SUM(Empleo) AS Empleados_totales
+           SELECT clae6, SUM(Empleados) AS Empleados,SUM(EmpleadasMujeres) AS EmpleadasMujeres
            FROM ActividadProductiva_Departamento
-           GROUP BY clae6
+           GROUP BY Clae6
            """
-Empleados = dd.query(consulta).df()
+ej = dd.query(consulta).df()
 
-Empleados["Proporcion_mujeres"] = Empleados["Empleadas"].astype(float)/Empleados["Empleados_totales"].astype(float)*100
-#%%
 
-ActividadProductiva_Departamento["Proporcion_mujeres"] = ActividadProductiva_Departamento["EmpleadasMujeres"].astype(float)/ActividadProductiva_Departamento["Empleados"].astype(float)*100   
+ej["Proporcion_mujeres"] = ej["EmpleadasMujeres"].astype(float)/ej["Empleados"].astype(float)*100   
+
 
 consulta = """
            SELECT *
-           FROM ActividadProductiva_Departamento
+           FROM ej 
+           WHERE EmpleadasMujeres != 0
+           """
+ej1 = dd.query(consulta).df()
+           
+consulta = """
+           SELECT *
+           FROM ej1
            ORDER BY Proporcion_mujeres ASC
            LIMIT 5
            """
@@ -195,7 +196,8 @@ mas_prop = dd.query(consulta).df()
 
 consulta = """
            SELECT *
-           FROM ActividadProductiva_Departamento
+           FROM ej1
+           WHERE EmpleadasMujeres > 0
            ORDER BY Proporcion_mujeres DESC
            LIMIT 5
            """
@@ -211,15 +213,27 @@ consulta = """
            """
 V5 = dd.query(consulta).df()
 
+consulta = """
+           SELECT V5.Clae6, Empleados, EmpleadasMujeres, Proporcion_mujeres, Descripcion
+           FROM V5
+           INNER JOIN ActividadProductiva AS A ON A.Clae6 = V5.Clae6
+           ORDER BY Proporcion_mujeres
+           """
+V5 = dd.query(consulta).df()           
 
-#%%
 
-total_mujeres = EstProductivos.loc[(EstProductivos["genero"] == "Mujeres") & (EstProductivos["clae6"] == 960202), "Empleo"].sum() 
-total_varones = EstProductivos.loc[(EstProductivos["genero"] == "Varones") & (EstProductivos["clae6"] == 960202), "Empleo"].sum()
-total = total_mujeres + total_varones
+plt.figure(figsize=(10,6))
+plt.bar(V5["Clae6"].astype(str),
+        V5["Proporcion_mujeres"],
+        color='mediumorchid')
+plt.axhline(y=33, color='red', linestyle='--', linewidth=2, label='Referencia (12)')
+plt.title("Proporción de mujeres empleadas por actividad (clae6)")
+plt.xlabel("Código CLAE6")
+plt.ylabel("Proporción de mujeres (%)")
+plt.xticks(rotation=45, ha='right')
+plt.text(2, 94, "Promedio de empleo femenino = 33.074%",
+         fontsize=12, color="black", ha='center',
+         bbox=dict(facecolor='white', edgecolor='black', boxstyle='round,pad=0.5'))
+plt.show()
 
-porc_mujeres = total_mujeres / total * 100
-porc_varones = total_varones / total * 100
-
-print(f"Mujeres: {total_mujeres} ({porc_mujeres:.2f}%)")
-print(f"Varones: {total_varones} ({porc_varones:.2f}%)")
+        
