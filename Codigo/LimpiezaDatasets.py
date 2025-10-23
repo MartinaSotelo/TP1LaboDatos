@@ -1,11 +1,25 @@
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
-"""
-En este archivo hacemos una limpieza de las tablas originales.
 
-Normalizamos los nombres de las provincias y departamentos
+"""
+Grupo Import_milanesas
+Integrantes: 
+Dulio Joaquin, 
+Risuleo Franco, 
+Perez Sotelo Martina
+
+En este archivo hacemos una limpieza de las tablas originales:
+
+- Normalizamos los nombres de las provincias y departamentos
 guiandonos del dataset 'departamentos'.
 
+- Agregamos el departamento_id en la tabla padron_ee
+
+- Borramos todos los espacios en blanco de padron_ee y cambiamos por nulls
+
+- Juntamos todos los niveles Jardines
+
+- Juntamos todos los niveles Secundario con SecundarioInet y SNU con SNUInet
+
+- limpiamos toda la informacion de padron_poblacion para tenerlo en una sola tabla
 """
 #%%===========================================================================
 # Importamos librerias vamos a usar
@@ -14,11 +28,12 @@ import pandas as pd
 import duckdb as dd
 import re
 import numpy as np
+import os
 #%%===========================================================================
 # Importamos los datasets que vamos a utilizar en este programa
 #=============================================================================
 
-carpeta = "/Import_Milanesas/TablasOriginales"
+carpeta = "~/import_milanesas/TablasOriginales/"
 
 padron_ee = pd.read_excel(carpeta + "2022_padron_oficial_establecimientos_educativos.xlsx", skiprows=6)
 actividades = pd.read_csv(carpeta + "actividades_establecimientos.csv")
@@ -77,9 +92,11 @@ dep_ac_sex_limpio = dd.query(consulta).df()
 #=============================================================================
 # padron_ee: pongo NULLS donde hay espacios en blanco.
 padron_ee.replace(' ', np.nan, inplace=True)
+#%%===========================================================================
+# Aca quiero meterle el ID a Padron_ee
+#=============================================================================
 
 
-# le saco tildes y pongo mayusculas a los nombres de provincias y departamentos a
 consulta = ''' 
               SELECT Común, cueanexo, Departamento, "Nivel inicial - Jardín maternal" AS JardinMaternal, "Nivel inicial - Jardín de infantes" AS JardinInfantes, Primario, Secundario, SNU, "Secundario - INET" AS SecundarioInet, "SNU - INET" AS SNUInet,
               REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(UPPER(Jurisdicción),'Á', 'A'),'É', 'E'),'Í', 'I'),'Ó', 'O'),'Ú', 'U') AS provincia
@@ -321,3 +338,13 @@ consulta = """
            """
 padron_poblacion_acomodado = dd.query(consulta).df()
 
+#=============================================================================
+#Exporto todas las tablas a csv
+#=============================================================================
+#Creo la carpeta TablasLimpias si no existe
+os.makedirs("TablasLimpias", exist_ok=True)
+
+#exporto los csv:   
+padron_poblacion_acomodado.to_csv("TablasLimpias/PadronPoblacionLimpio.csv", index=False)
+dep_ac_sex_limpio.to_csv("TablasLimpias/DepartamentoActivdadySexoLimpio.csv", index=False)
+Padron_ee_limpio.to_csv("TablasLimpias/PadronEstablecimientosEducativosLimpio.csv",index=False)
