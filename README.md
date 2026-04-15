@@ -20,7 +20,7 @@ A través de la limpieza y el análisis de fuentes de datos oficiales, el estudi
 
     Matplotlib para la generación de visualizaciones estadísticas.
 
-SQL para consultas complejas sobre los datasets.
+    SQL para consultas complejas sobre los datasets.
 
 📂 Estructura del Repositorio
 
@@ -30,39 +30,39 @@ El proyecto se organiza de manera modular para separar la gestión de datos, la 
 
         raw/: Archivos originales sin modificar.
 
-interim/: Datos en proceso de transformación.
+        interim/: Datos en proceso de transformación.
 
-processed/: Datasets finales, limpios y normalizados bajo las tres formas normales.
+        processed/: Datasets finales, limpios y normalizados bajo las tres formas normales.
 
-scripts/: Módulos de Python desarrollados íntegramente en Spyder:
+    scripts/: Módulos de Python desarrollados íntegramente en Spyder:
 
-    LimpiezaDatasets.py: Script para el tratamiento inicial y limpieza de las fuentes.
+        LimpiezaDatasets.py: Script para el tratamiento inicial y limpieza de las fuentes.
 
-MetricasDeCalidad.py: Implementación de la técnica GQM para medir eficiencia y calidad.
+        MetricasDeCalidad.py: Implementación de la técnica GQM para medir eficiencia y calidad.
 
-TablasRelacional.py: Creación del modelo relacional y cumplimiento de formas normales.
+        TablasRelacional.py: Creación del modelo relacional y cumplimiento de formas normales.
 
-limpiezaConsultas.py: Ejecución de las 4 consultas SQL principales.
+        limpiezaConsultas.py: Ejecución de las 4 consultas SQL principales.
 
-Visualizaciones.py: Generación de gráficos estadísticos con Matplotlib.
+        Visualizaciones.py: Generación de gráficos estadísticos con Matplotlib.
 
-docs/: Documentación técnica y resultados.
+    docs/: Documentación técnica y resultados.
 
-    visualizaciones/:
+        visualizaciones/:
 
-        01_grafico_empleados_provincia.png 
+            01_grafico_empleados_provincia.png 
 
-02_grafico_establecientos_vs_poblacion.png 
+            02_grafico_establecientos_vs_poblacion.png 
 
-03_grafico_boxplot.png
+            03_grafico_boxplot.png
 
-04_grafico_relacion_empleados_establecimientos.png 
+            04_grafico_relacion_empleados_establecimientos.png 
 
-05_grafico_proporcion_mujeres_por_actividad.png 
+            05_grafico_proporcion_mujeres_por_actividad.png 
+            
+        Informe.pdf: Documento final con el análisis, metodología GQM y conclusiones.
 
-Informe.pdf: Documento final con el análisis, metodología GQM y conclusiones.
-
-2025C2-TP01-Enunciado.pdf: Consignas oficiales del trabajo práctico.
+        2025C2-TP01-Enunciado.pdf: Consignas oficiales del trabajo práctico.
 
 🚀 Metodología y Procesamiento
 
@@ -70,24 +70,24 @@ El proyecto aplicó técnicas rigurosas de ingeniería de datos:
 
     Limpieza y Normalización: Se transformaron datasets originales que no cumplían con las Formas Normales (1FN y 2FN).
 
-Optimización de Rendimiento: Mediante la técnica GQM (Goal, Question, Metric), se logró reducir el tiempo de lectura del dataset educativo de 93.5 segundos a 0.14 segundos.
+    Optimización de Rendimiento: Mediante la técnica GQM (Goal, Question, Metric), se logró reducir el tiempo de lectura del dataset educativo de 93.5 segundos a 0.14 segundos.
 
-Modelo Relacional: Diseño de un Diagrama Entidad-Relación (DER) para vincular establecimientos educativos, productivos y datos poblacionales por departamento.
+    Modelo Relacional: Diseño de un Diagrama Entidad-Relación (DER) para vincular establecimientos educativos, productivos y datos poblacionales por departamento.
 
-Análisis SQL: Ejecución de consultas para determinar la densidad de empleados y la representación femenina por rubro (CLAE).
+    Análisis SQL: Ejecución de consultas para determinar la densidad de empleados y la representación femenina por rubro (CLAE).
 
 📊 Hallazgos Principales
 
     Se observó una correlación directa entre la cantidad de habitantes de un nivel educativo y la disponibilidad de establecimientos de dicho nivel.
 
-Existe un marcado descenso poblacional entre el nivel primario y secundario, sugiriendo deserción escolar.
-![Empleados por Provincia](docs/visualizaciones/01_grafico_empleados_provincia.png)
-El promedio de empleo femenino en las actividades productivas analizadas se sitúa en un 33.074%.
+    Existe un marcado descenso poblacional entre el nivel primario y secundario, sugiriendo deserción escolar.
+
+    El promedio de empleo femenino en las actividades productivas analizadas se sitúa en un 33.074%.
 
 ✒️ Integrantes (Grupo: "IMPORT_MILANESAS")
 
+    Perez Sotelo Martina
     Dulio Joaquin 
+    Risuleo Franco 
 
-Risuleo Franco 
-
-Perez Sotelo Martina
+    
