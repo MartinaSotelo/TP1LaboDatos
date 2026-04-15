@@ -1,9 +1,9 @@
-# Análisis de Productividad y Educación en Argentina
+# Análisis de Productividad y Educación en Argentina (Laboratorio de Datos I)
 ![Estado del Proyecto](https://img.shields.io/badge/Estado-En%20Refinamiento-yellowgreen?style=for-the-badge&logo=github)
 
 > **Nota:** Este proyecto está siendo actualizado para mejorar la calidad visual de los reportes y la profundidad de las conclusiones analíticas.
 >
-> Análisis de Productividad y Educación en Argentina (Laboratorio de Datos I)
+
 📌 Descripción del Proyecto
 
 Este proyecto fue desarrollado para el Trabajo Práctico 1 de la materia Laboratorio de Datos I (UBA, 2do Cuatrimestre 2025). La investigación busca demostrar la estrecha relación entre el desarrollo productivo de Argentina y el nivel educativo de sus ciudadanos.
